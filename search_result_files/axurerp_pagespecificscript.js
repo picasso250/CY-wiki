@@ -4,7 +4,18 @@ $axure.eventManager.pageLoad(
 function (e) {
 
 });
-gv_vAlignTable['u6'] = 'top';gv_vAlignTable['u7'] = 'top';gv_vAlignTable['u8'] = 'top';gv_vAlignTable['u9'] = 'top';document.getElementById('u0_img').tabIndex = 0;
+gv_vAlignTable['u6'] = 'top';gv_vAlignTable['u7'] = 'top';gv_vAlignTable['u8'] = 'top';u9.tabIndex = 0;
+
+u9.style.cursor = 'pointer';
+$axure.eventManager.click('u9', function(e) {
+
+if (true) {
+
+	self.location.href=$axure.globalVariableProvider.getLinkUrl('post_edit_wiki.html');
+
+}
+});
+gv_vAlignTable['u9'] = 'top';document.getElementById('u0_img').tabIndex = 0;
 
 u0.style.cursor = 'pointer';
 $axure.eventManager.click('u0', function(e) {

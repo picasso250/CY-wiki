@@ -1,4 +1,4 @@
-﻿for(var i = 0; i < 23; i++) { var scriptId = 'u' + i; window[scriptId] = document.getElementById(scriptId); }
+﻿for(var i = 0; i < 22; i++) { var scriptId = 'u' + i; window[scriptId] = document.getElementById(scriptId); }
 
 $axure.eventManager.pageLoad(
 function (e) {
@@ -48,7 +48,7 @@ if (true) {
 
 }
 });
-gv_vAlignTable['u17'] = 'center';gv_vAlignTable['u22'] = 'top';gv_vAlignTable['u5'] = 'center';gv_vAlignTable['u1'] = 'center';gv_vAlignTable['u9'] = 'center';document.getElementById('u6_img').tabIndex = 0;
+gv_vAlignTable['u17'] = 'center';gv_vAlignTable['u5'] = 'center';gv_vAlignTable['u1'] = 'center';gv_vAlignTable['u9'] = 'center';document.getElementById('u6_img').tabIndex = 0;
 
 u6.style.cursor = 'pointer';
 $axure.eventManager.click('u6', function(e) {
