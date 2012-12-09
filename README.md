@@ -22,3 +22,6 @@ WireFrame
 ---------
 
 http://picasso250.github.com/CY-wiki/wireframe/start.html
+
+
+也别什么线框图了，直接就照抄 GitHub 的 wiki 得了。
