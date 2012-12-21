@@ -1,0 +1,17 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+$controller = $GLOBALS['controller'];
+?>
+<div class="masthead">
+  <ul class="nav nav-pills pull-right">
+    <?php foreach ($GLOBALS['nav'] as $link => $arr): ?>
+      <li class="<?= $link === $controller ? 'active' : '' ?>">
+        <a href="<?= ROOT . $link ?>"><?= $arr['title'] ?></a>
+      </li>
+    <?php endforeach ?>
+  </ul>
+  <h3 class="muted"><?= $GLOBALS['config']['site']['name'] ?></h3>
+</div>

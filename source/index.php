@@ -15,7 +15,7 @@ define('IN_APP', 1);
 
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_ROOT', __DIR__ . DS);
-define('CORE_ROOT', APP_ROOT . 'app_core' . DS);
+define('CORE_ROOT', APP_ROOT . 'core' . DS);
 
 include APP_ROOT . 'config/common.php';
 
@@ -40,11 +40,12 @@ if (file_exists($user_lib_file))
 
 // all user excute this controller: init
 $init_controller_file = AppFile::controller('init');
-if (file_exists($init_controller_file))
+if (file_exists($init_controller_file)) {
     include $init_controller_file;
+    user_init();
+}
 
 $controller_file = AppFile::controller($controller);
-
 if (!file_exists($controller_file)) {
     $controller = 'default'; // page 404
     $controller_file = AppFile::controller($controller);
@@ -52,8 +53,9 @@ if (!file_exists($controller_file)) {
 
 $view = $controller; // default view
 
-// execute controller
+// include and execute controller
 include $controller_file;
-
-$c = new {ucfirst($controller)}();
-$c->{$target ?: 'index'}();
+$controller_class = ucfirst($controller) . 'Controller';
+$c = new $controller_class();
+if ($target)
+    $c->$target();

@@ -1,130 +1,23 @@
 
 --
--- 数据库: `local`
+-- 数据库: `cywiki`
 --
-CREATE DATABASE `local` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `local`;
+CREATE DATABASE `cywiki` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `cywiki`;
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `big_category`
+-- 表的结构 `entry`
 --
 
-CREATE TABLE IF NOT EXISTS `big_category` (
+CREATE TABLE `entry` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `index` smallint(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `big_category` int(10) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `index` smallint(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `big_category` (`big_category`,`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `city`
---
-
-CREATE TABLE IF NOT EXISTS `city` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `province` int(10) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `index` smallint(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `province` (`province`,`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `district`
---
-
-CREATE TABLE IF NOT EXISTS `district` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `city` int(10) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `index` smallint(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `city` (`city`,`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `province`
---
-
-CREATE TABLE IF NOT EXISTS `province` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
-  `index` smallint(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `shop`
---
-
-CREATE TABLE IF NOT EXISTS `shop` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `category` int(10) unsigned NOT NULL,
-  `type` int(10) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `latilongi` char(22) NOT NULL,
-  `latitude` decimal(9,6) NOT NULL,
-  `longitude` decimal(9,6) NOT NULL,
-  `district` int(10) unsigned NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `average` decimal(10,2) unsigned NOT NULL,
-  `address` varchar(100) NOT NULL,
+  `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `latest` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `shop_image`
---
-
-CREATE TABLE IF NOT EXISTS `shop_image` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `shop` int(10) unsigned NOT NULL,
-  `src` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `type`
---
-
-CREATE TABLE IF NOT EXISTS `type` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `big_category` int(10) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `index` smallint(3) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -132,11 +25,27 @@ CREATE TABLE IF NOT EXISTS `type` (
 -- 表的结构 `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE `user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` char(20) NOT NULL,
-  `password` char(64) NOT NULL,
+  `email` char(50) COLLATE utf8_unicode_ci NOT NULL,
+  `password` char(64) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `version`
+--
+
+CREATE TABLE `version` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `entry` int(10) unsigned NOT NULL,
+  `editor` int(10) unsigned NOT NULL,
+  `content` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `reason` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `edited` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;

@@ -1,9 +1,13 @@
 <?php
 
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+
 class Index {
-    public function index()
+    public function __construct()
     {
-        echo "I";
+        if (!$GLOBALS['target'])
+            render_view('master', array('view' => 'index'));
     }
 }
-// render_view('master', array('view' => 'index'));

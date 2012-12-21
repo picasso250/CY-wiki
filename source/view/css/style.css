@@ -1,10 +1,13 @@
-.big-category-table .count {
-    text-align: center;
+body {
+    padding-top: 20px;
+    padding-bottom: 40px;
 }
 
-.shop .thumbnails .thumbnail {
-    position: relative;
+/* Custom container */
+.container-narrow {
+    margin: 0 auto;
+    max-width: 700px;
 }
-.shop .thumbnails .thumbnail .btn {
-    position: absolute;
+.container-narrow > hr {
+    margin: 30px 0;
 }

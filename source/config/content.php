@@ -5,11 +5,11 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-$config['site']['name'] = '沃生活';
+$config['site']['name'] = 'CY wiki';
 
 // pages need login
 $config['page_need_login'] = array(
-    'cate',
+    'create',
     'shop',
     'area');
 
@@ -27,23 +27,8 @@ $config['error']['info'] = array(
     'PHONE_EMPTY' => '请填写手机号码',
     'EMAIL_EMPTY' => '请填写您的电子邮箱', );
 
-$config['nav']['top'] = '
-管理面板 shop
-帮助 help 
-';
-
-$config['nav']['side'] = '
-商铺管理 shop
- + 商铺管理 
-分类管理 cate
- + 大类 BigCategory
- - 分类 Category
- - 类型 Type
-地区管理 area
- + 地区管理
-';
-
-$config['help_text'] = '
-此处内容由用户自定义
-请至配置文件中修改
+$config['nav'] = '
+首页 index
+页面列表 list
+新建页面 create
 ';
