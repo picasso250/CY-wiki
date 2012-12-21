@@ -55,12 +55,5 @@ $view = $controller; // default view
 // execute controller
 include $controller_file;
 
-$controller_action_file = AppFile::controller("$controller.$action");
-if (file_exists($controller_action_file))
-    include $controller_action_file;
-
-$controller_action_target_file = AppFile::controller("$controller.$action.$target");
-if (file_exists($controller_action_target_file)) {
-    $view = "$controller.$target";
-    include $controller_action_target_file;
-}
+$c = new {ucfirst($controller)}();
+$c->{$target ?: 'index'}();
