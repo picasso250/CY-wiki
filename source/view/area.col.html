@@ -1,0 +1,89 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+$dt = strtolower($dataTarget);
+?>
+<table class="table table-striped table-hover">
+  <thead>
+    <th>#</th>
+    <th><?= $tableTitle ?></th>
+    <th>排序</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <?php $i = 0; ?>
+    <?php foreach ($data as $entry): ?>
+    <?php $i++; ?>
+      <tr class="<?= $GLOBALS[$dt . 'Id'] == $entry->id ? 'success' : '' ?>">
+        <td><?= $i ?></td>
+        <?php 
+        $query = $dt . '=' . $entry->id;
+        if ($dataTarget == 'City') {
+          $query .= '&amp;province=' . $GLOBALS['provinceId'];
+        }
+        ?>
+        <td class="name">
+          <?php if ($dataTarget == 'District'): ?>
+            <?= $entry->name ?>
+          <?php else: ?>
+            <a href="?<?= $query ?>"><?= $entry->name ?></a>
+          <?php endif ?>
+        </td>
+        <td class="index"><?= $entry->index ?></td>
+        <td>
+          <a class="btn btn-small edit-btn" href="#" data-target="<?= $dataTarget ?>" data-id="<?= $entry->id ?>">编辑</a>
+          <a class="btn btn-danger btn-mini del-btn" href="<?= ROOT ?>area?action=del&amp;target=<?= $dataTarget ?>&amp;id=<?= $entry->id ?>">删除</a>
+        </td>
+      </tr>
+    <?php endforeach ?>
+  </tbody>
+</table>
+
+<a href="#add<?= $dataTarget ?>" role="button" class="btn" data-toggle="modal"><?= $addTitle ?></a>
+
+<div id="add<?= $dataTarget ?>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel"><?= $addTitle ?></h3>
+  </div>
+  <form action="<?= ROOT ?>area" method="post" class="form-inline">
+    <div class="modal-body">
+        <input type="hidden" name="action" value="add">
+        <input type="hidden" name="target" value="<?= $dataTarget ?>">
+        <?php if (isset($parentName)): ?>
+          <input type="hidden" name="<?= $parentName ?>" value="<?= $GLOBALS[$parentName . 'Id'] ?>">
+        <?php endif ?>
+        <fieldset>
+          <label>名称：</label>
+          <input type="text" name="name">
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">确认</button>
+    </div>
+  </form>
+</div><!--/modal-->
+
+<div id="edit<?= $dataTarget ?>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel"><?= $editTitle ?></h3>
+  </div>
+  <form action="<?= ROOT ?>area" method="post" class="form-inline">
+    <div class="modal-body">
+        <input type="hidden" name="action" value="edit">
+        <input type="hidden" name="target" value="<?= $dataTarget ?>">
+        <input type="hidden" name="id" value="">
+        <fieldset>
+          <input type="text" name="name">
+          <label>排序数：</label>
+          <input type="text" name="index">
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit">确认</button>
+    </div>
+  </form>
+</div><!--/modal-->

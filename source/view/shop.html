@@ -1,0 +1,115 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+$shop = $GLOBALS['shop'];
+?>
+<div class="fluid-row shop">
+
+  <div class="span6">
+    <h1><?= $shop->name ?> - 商铺信息</h1>
+    <form action="<?= ROOT ?>shop" method="post" class="" name="editShop">
+      <input type="hidden" name="action" value="edit">
+      <input type="hidden" name="target" value="<?= $shop->id ?>">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label" for="inputName">名称：</label>
+          <div class="controls">
+            <input type="text" name="name" class="required" id="inputName" value="<?= $shop->name ?>">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">地区：</label>
+          <div class="controls">
+            <?php 
+            widget('select', array(
+              'fieldName' => 'province',
+              'defaultText' => '请选择',
+              'class' => 'span3'));
+            widget('select', array(
+              'fieldName' => 'city',
+              'defaultText' => '请选择',
+              'data' => $GLOBALS['cities'],
+              'class' => 'span3'));
+            widget('select', array(
+              'fieldName' => 'district',
+              'defaultText' => '请选择',
+              'class' => 'span3 required')); ?>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">类别：</label>
+          <div class="controls">
+            <?php 
+            widget('select', array(
+              'fieldName' => 'bigCategory',
+              'defaultText' => '请选择',
+              'data' => $GLOBALS['bigCategories'],
+              'class' => 'span3')); 
+            widget('select', array(
+              'fieldName' => 'category',
+              'defaultText' => '请选择',
+              'data' => $GLOBALS['categories'],
+              'class' => 'span3 required')); ?>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">类型：</label>
+          <div class="controls">
+            <?php
+            widget('select', array(
+              'fieldName' => 'type',
+              'defaultText' => '请选择',
+              'class' => 'span3 required')); ?>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputAverage">人均消费：</label>
+          <div class="controls">
+            <input type="text" name="average" class="" id="inputAverage" value="<?= $shop->average ?>">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputAddress">地址：</label>
+          <div class="controls">
+            <input type="text" name="address" class="required" id="inputAddress" value="<?= $shop->address ?>">
+          </div>
+        </div>
+        <label>电话：</label>
+        <input type="text" name="phone" class="" value="<?= $shop->phone ?>">
+        <div class="control-group">
+          <label class="control-label" for="inputLatilongi">经纬度：</label>
+          <div class="controls">
+            <input type="text" name="latilongi" class="required" id="inputLatilongi" value="<?= $shop->latilongi ?>">
+          </div>
+        </div>
+      </fieldset>
+      <button class="btn btn-primary btn-large" type="submit">保存以上修改</button>
+    </form>
+  </div>
+
+  <div class="span6">
+    <h2>图片</h2>
+    
+    <form action="<?= ROOT ?>shop" enctype="multipart/form-data" method="post" name="uploadImage">
+      <input type="hidden" name="action" value="upload">
+      <input type="hidden" name="target" value="image">
+      <input type="hidden" name="shop" value="<?= $shop->id ?>">
+      <label for="imageUploader" class="btn btn-primary">上传图片</label>
+      <input type="file" name="image" title="上传图片" class="" id="imageUploader">
+    </form>
+    <ul class="thumbnails">
+      <?php foreach ($shop->images() as $image): ?>
+      <li class="span4">
+        <div class="thumbnail">
+          <a href="<?= ROOT ?>shop?a=rm&amp;target=image&amp;id=<?= $image->id ?>&amp;shop=<?= $shop->id ?>" class="btn btn-mini btn-danger">删除</a>
+          <a href="<?= $image->src ?>" class="">
+            <img src="<?= $image->src ?>" alt="">
+          </a>
+        </div>
+      </li>
+      <?php endforeach ?>
+    </ul>
+  </div>
+</div>

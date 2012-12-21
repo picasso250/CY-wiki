@@ -1,0 +1,13 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+?>
+<h1>分类管理 - 类型</h1>
+<?php render_view('cate.sub', array(
+  'tops' => $GLOBALS['bigCategories'],
+  'as' => $GLOBALS['associateCategories'],
+  'title' => '类型',
+  'dataType' => 'Type',
+  )); ?>

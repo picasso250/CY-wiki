@@ -1,0 +1,10 @@
+.big-category-table .count {
+    text-align: center;
+}
+
+.shop .thumbnails .thumbnail {
+    position: relative;
+}
+.shop .thumbnails .thumbnail .btn {
+    position: absolute;
+}

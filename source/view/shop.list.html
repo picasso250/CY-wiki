@@ -1,0 +1,143 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+?>
+<a href="#addShop" role="button" class="btn pull-right" data-toggle="modal">添加商铺</a>
+
+<div id="addShop" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">添加商铺</h3>
+  </div>
+  <form action="<?= ROOT ?>shop" method="post" class="">
+    <div class="modal-body">
+        <input type="hidden" name="action" value="add">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="inputName">名称：</label>
+            <div class="controls">
+              <input type="text" name="name" class="required" id="inputName">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">地区：</label>
+            <div class="controls">
+              <?php 
+              widget('select', array(
+                'fieldName' => 'province',
+                'defaultText' => '请选择',
+                'class' => 'span4')); 
+              widget('select', array(
+                'fieldName' => 'city',
+                'defaultText' => '请选择',
+                'data' => array(),
+                'class' => 'span4'));
+              widget('select', array(
+                'fieldName' => 'district',
+                'defaultText' => '请选择',
+                'data' => array(),
+                'class' => 'span4 required')); ?>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">类别：</label>
+            <div class="controls">
+              <?php 
+              widget('select', array(
+                'fieldName' => 'bigCategory',
+                'defaultText' => '请选择',
+                'data' => $GLOBALS['bigCategories'],
+                'class' => 'span4')); 
+              widget('select', array(
+                'fieldName' => 'category',
+                'defaultText' => '请选择',
+                'data' => array(),
+                'class' => 'span4 required')); ?>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">类型：</label>
+            <div class="controls">
+              <?php
+              widget('select', array(
+                'fieldName' => 'type',
+                'defaultText' => '请选择',
+                'data' => array(),
+                'class' => 'span4 required')); ?>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputAverage">人均消费：</label>
+            <div class="controls">
+              <input type="text" name="average" class="" id="inputAverage">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputAddress">地址：</label>
+            <div class="controls">
+              <input type="text" name="address" class="required" id="inputAddress">
+            </div>
+          </div>
+          <label>电话：</label>
+          <input type="text" name="phone" class="">
+          <div class="control-group">
+            <label class="control-label" for="inputLatilongi">经纬度：</label>
+            <div class="controls">
+              <input type="text" name="latilongi" class="required" id="inputLatilongi">
+            </div>
+          </div>
+        </fieldset>
+      <button class="btn btn-primary btn-large" type="submit">添加商铺</button>
+    </div>
+  </form>
+</div>
+
+<h2 class="">商铺管理</h2>
+
+<form class="form-search" name="search">
+  <label>名称：</label>
+  <input type="text" name="name" value="<?= $GLOBALS['name'] ?>">
+  <label>市、县：</label>
+  <?php widget('select', array(
+      'fieldName' => 'city', 
+      'data' => $GLOBALS['cities'],
+      'class' => 'span2')); ?>
+  <label>区：</label>
+  <?php widget('select', array(
+      'fieldName' => 'district',
+      'class' => 'span2')); ?>
+  <label>排序：</label>
+  <?php widget('select', array(
+      'fieldName' => 'sort',
+      'noDefault' => true,
+      'class' => 'span2')); ?>
+  <input type="submit" value="搜索" class="btn btn-primary">
+</form>
+<table class="table table-striped table-hover">
+<tbody>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>名称</th>
+      <th>市、县、区</th>
+      <th></th>
+    </tr>
+  </thead>
+  <?php $i = 1; ?>
+  <?php foreach ($GLOBALS['shops'] as $shop): ?>
+    <tr>
+      <td><?= $i ?></td>
+      <td><a href="<?= ROOT ?>shop/<?= $shop->id ?>"><?= $shop->name ?></a></td>
+      <?php $district = $shop->district(); ?>
+      <td><?= $district->city()->name . ' - ' . $district->name ?></td>
+      <td>
+        <a class="btn btn-primary btn-small edit-btn" href="<?= ROOT ?>shop/<?= $shop->id ?>">编辑</a>
+        <a class="btn btn-danger btn-mini del-btn" href="?a=del&amp;id=<?= $shop->id ?>">删除</a>
+      </td>
+    </tr>
+    <?php $i++; ?>
+  <?php endforeach ?>
+</tbody>
+</table>

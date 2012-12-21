@@ -1,0 +1,36 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+?>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="<?= ROOT ?>"><?= $siteConfig['name'] . ' · 后台' ?></a>
+      <div class="nav-collapse collapse">
+        <p class="navbar-text pull-right">
+          <?php if ($GLOBALS['has_login']): ?>
+            <?php $user = $GLOBALS['user']; ?>
+            <a href="#" class="navbar-link"><?= htmlspecialchars($user->name) ?></a>
+            <a href="<?= ROOT ?>logout" class="navbar-link">退出</a>
+          <?php else: ?>
+            <a href="<?= ROOT ?>login" class="navbar-link">登录</a>
+          <?php endif ?>
+        </p>
+        <ul class="nav">
+          <?php foreach ($GLOBALS['topNav'] as $link => $info): ?>
+            <li class="<?= $link == $GLOBALS['controller'] ? 'active' : '' ?>">
+              <a href="<?= ROOT . $link ?>"><?= $info['title'] ?></a>
+            </li>
+          <?php endforeach ?>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>

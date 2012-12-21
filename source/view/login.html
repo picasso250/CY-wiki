@@ -1,0 +1,31 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+$msg = $GLOBALS['msg'];
+?>
+<h1>登录</h1>
+<?php if ($msg): ?>
+  <div class="text-error"><?= $msg ?></div>
+<?php endif ?>
+<form action="<?= ROOT ?>login" method="post" class="form-horizontal">
+  <input type="hidden" name="back" value="<?= _req('back') ?>">
+  <div class="control-group">
+    <label class="control-label" for="inputUsername">用户名：</label>
+    <div class="controls">
+      <input type="text" name="username" id="inputUsername" placeholder="" value="<?= $GLOBALS['username'] ?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputPassword">密码：</label>
+    <div class="controls">
+      <input type="password" name="password" id="inputPassword" placeholder="">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">登录</button>
+    </div>
+  </div>
+</form>
