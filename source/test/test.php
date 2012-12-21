@@ -29,3 +29,11 @@ $email = 'test@z.cn';
 $user = User::create($email, 'password');
 $user->update('name', '小池');
 test($user->email, $email, 'create User');
+
+begin_test();
+$title = 'hello';
+$user->createEntry($title, 'word');
+test(Entry::count(), 1, 'create Entry');
+
+begin_test();
+test(!Entry::has($title), false, 'has Entry?');

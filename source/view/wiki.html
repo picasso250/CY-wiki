@@ -1,0 +1,9 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+$version = $entry->latestVersion();
+?>
+<h1><?= $entry->title ?></h1>
+<?= $version->toHtml() ?>

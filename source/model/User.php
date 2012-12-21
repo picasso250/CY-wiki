@@ -20,7 +20,7 @@ class User extends BasicModel
         return new self(Pdb::lastInsertId());
     }
 
-    public function exists($email)
+    public static function has($email)
     {
         return Pdb::exists(self::table(), array('email = ?' => $email));
     }

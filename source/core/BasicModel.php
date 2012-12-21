@@ -71,11 +71,10 @@ class BasicModel
 
     public function exists()
     {
-        $self = get_called_class();
-        return Pdb::exists($self::$table, $this->selfCond());
+        return Pdb::exists(self::table(), $this->selfCond());
     }
 
-    public function selfCond() 
+    public function selfCond()
     {
         return array('id = ?' => $this->id);
     }
@@ -128,7 +127,7 @@ class BasicModel
             $class = ucfirst($name);
             return new $class($this->info[$prop]);
         } else {
-            throw new Exception("no ", 1);
+            throw new Exception("no $prop", 1);
             
         }
     }

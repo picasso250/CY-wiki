@@ -14,4 +14,9 @@ class Version extends BasicModel
             'content' => $content,
             'edited = NOW()' => null));
     }
+
+    public function toHtml()
+    {
+        return "<pre>$this->content</pre>";
+    }
 }

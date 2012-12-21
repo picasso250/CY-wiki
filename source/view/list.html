@@ -1,0 +1,11 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+?>
+<ul>
+  <?php foreach ($entries as $entry): ?>
+    <li><a href="<?= ROOT . "wiki/$entry->title" ?>"><?= $entry->title ?></a></li>
+  <?php endforeach ?>
+</ul>

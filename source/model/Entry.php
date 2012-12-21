@@ -6,9 +6,15 @@
 
 class Entry extends BasicModel
 {
+    public static function has($title)
+    {
+        $info = Pdb::fetchRow('*', self::table(), array('title = ?' => $title));
+        return $info ? new self($info) : false;
+    }
+    
     public function latestVersion()
     {
-        return new Version($this->lastest);
+        return new Version($this->latest);
     }
 
     public static function create(User $user, $title, $content)

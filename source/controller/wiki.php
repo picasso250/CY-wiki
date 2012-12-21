@@ -1,12 +1,18 @@
 <?php
 
-class Wiki {
+class WikiController {
     public function __construct()
     {
-
     }
-    public function _create()
+
+    public function __call($name, $args)
     {
-        render_view('master');
+        $entry = Entry::has($name);
+        if ($entry) {
+            // show
+            render_view('master', compact('entry'));
+        } else {
+            redirect("create?title=$name");
+        }
     }
 }
