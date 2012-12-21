@@ -6,44 +6,41 @@
 
 class User extends BasicModel
 {
-    public static function add($username, $password)
+    public function createEntry($title, $content)
+    {
+        return Entry::create($this, $title, $content);
+    }
+
+    public static function create($email, $password)
     {
         $arr = array(
-            'name' => $username,
+            'email' => $email,
             'password' => md5($password));
         Pdb::insert($arr, self::table());
         return new self(Pdb::lastInsertId());
     }
 
-    public function find($username)
+    public function exists($email)
     {
-        return Pdb::exists(self::table(), array('name=?' => $username));
+        return Pdb::exists(self::table(), array('email = ?' => $email));
     }
 
-    public static function check($username, $password)
+    public static function check($email, $password)
     {
         $info = Pdb::fetchRow('*', self::table(), array(
-            'name=?' => $username,
-            'password=?' => md5($password)));
-        if ($info) {
-            return new User($info);
-        } else {
-            return false;
-        }
+            'email = ?' => $email,
+            'password = ?' => md5($password)));
+        return $info ? new self($info) : false;
     }
 
     public function changePassword($new_password)
     {
-        Pdb::update(
-            array('password' => md5($new_password)),
-            self::table(),
-            $this->selfCond());
+        $this->update(array('password' => md5($new_password)));
     }
 
     public function login()
     {
         $_SESSION['se_user_id'] = $this->id;
-        $this->update(array('updated = NOW()' => null));
     }
 
     public function logout()
@@ -51,7 +48,8 @@ class User extends BasicModel
         $_SESSION['se_user_id'] = 0;
     }
 
-    public static function loggedIn()
+    // get the current user who has logined in
+    public static function current()
     {
         if (isset($_SESSION['se_user_id']) && $_SESSION['se_user_id']) {
             return new self($_SESSION['se_user_id']);
