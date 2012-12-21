@@ -4,7 +4,7 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class CreateController {
+class ListController {
     public function __construct()
     {
         if ($GLOBALS['by_post']) {

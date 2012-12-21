@@ -8,9 +8,7 @@ class LoginController {
 
         if ($username && $password) {
             $user = User::check($username, $password);
-            if (!$user) {
-                $msg = $ERROR['USERNAME_OR_PASSWORD_INCORRECT'];
-            } else {
+            if ($user) {
                 $user->login();
                 redirect(_req('back'));
             }

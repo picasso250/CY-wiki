@@ -4,7 +4,7 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class Index {
+class IndexController {
     public function __construct()
     {
         if (!$GLOBALS['target'])

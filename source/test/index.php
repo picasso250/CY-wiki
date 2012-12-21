@@ -10,7 +10,7 @@ define('ON_TEST', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
 define('APP_ROOT', __DIR__ . '/../');
-define('CORE_ROOT', APP_ROOT . 'app_core/');
+define('CORE_ROOT', APP_ROOT . 'core/');
 define('TEST_ROOT', __DIR__ . '/');
 
 require TEST_ROOT . 'lib.php'; // functions for test

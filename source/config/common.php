@@ -24,7 +24,7 @@ define('ROOT', '/'); // 这个东西，尤其可恶，实在不觉得有存在�
 
 $config['db'] = array(
     'host' => 'localhost',
-    'dbname' => 'local',
+    'dbname' => 'cywiki',
     'username' => 'root',
     'password' => 'xiaosan'
 );

@@ -11,7 +11,7 @@ class Version extends BasicModel
         return parent::create(array(
             'entry' => $e->id,
             'editor' => $u->id,
-            'text' => $content,
+            'content' => $content,
             'edited = NOW()' => null));
     }
 }
