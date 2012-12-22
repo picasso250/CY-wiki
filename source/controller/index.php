@@ -7,7 +7,7 @@
 class IndexController {
     public function __construct()
     {
-        if (!$GLOBALS['target'])
-            render_view('master', array('view' => 'index'));
+        $recents = Entry::recents(10);
+        render_view('master', compact('recents'));
     }
 }

@@ -25,14 +25,38 @@ class Entry extends BasicModel
 
         $version = Version::create($user, $entry, $content);
 
-        $entry->update('latest', $version->id);
+        $entry->update(array(
+            'latest' => $version->id, 
+            'updated = NOW()' => null));
 
         return $entry;
+    }
+
+    public static function recents($num = 10)
+    {
+        return self::read(array('limit' => $num, 'sort' => 'updated DESC'));
     }
 
     public function edit(User $user, $title, $content, $reason)
     {
         $version = Version::create($user, $this, $content, $reason);
-        parent::update(array('latest' => $version->id, 'title' => $title));
+        parent::update(array(
+            'latest' => $version->id, 
+            'title' => $title,
+            'updated = NOW()' => null));
+    }
+
+    public static function buildDbArgs($conds)
+    {
+        $tables = self::table();
+        extract($conds);
+        $conds = array();
+        $orderby = array();
+        $tail = '';
+        if (isset($limit))
+            $tail .= "LIMIT $limit";
+        if (isset($sort))
+            $orderby[] = $sort;
+        return array($tables, $conds, $orderby, $tail);
     }
 }
