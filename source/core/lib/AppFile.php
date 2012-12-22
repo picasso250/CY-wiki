@@ -20,7 +20,12 @@ class AppFile
 
     public static function lib($name)
     {
-        return CORE_ROOT . 'lib' . DS . "$name.app";
+        return APP_ROOT . 'lib' . DS . "$name.php";
+    }
+
+    public static function coreLib($name)
+    {
+        return CORE_ROOT . 'lib' . DS . "$name.php";
     }
 
     public static function js($name)

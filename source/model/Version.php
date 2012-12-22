@@ -18,6 +18,7 @@ class Version extends BasicModel
 
     public function toHtml()
     {
-        return "<pre>$this->content</pre>";
+        require_once AppFile::lib('markdown' . DS . 'markdown');
+        return Markdown($this->content);
     }
 }

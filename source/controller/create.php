@@ -13,7 +13,7 @@ class CreateController {
             $reason = _post('reason');
 
             $GLOBALS['user']->createEntry($title, $content);
-            redirect();
+            redirect("wiki/$title");
         }
         render_view('master');
     }
