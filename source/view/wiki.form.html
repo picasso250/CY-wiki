@@ -22,5 +22,13 @@ $id = _req('id');
   <textarea name="content" class="span12 " rows="16"><?= $content ?></textarea>
   <input type="text" name="reason" class = "span12" placeholder="原因（可选）" value="<?= $reason ?>">
   <input type="submit" class="btn btn-primary" value="<?= $buttonText ?>">
-  <button class="btn">预览</button>
+  <button class="btn" id="previewButton">预览</button>
 </form>
+
+<div id="previewModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalTitle" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalTitle"></h3>
+  </div>
+  <div class="modal-body"></div>
+</div>

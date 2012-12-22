@@ -20,6 +20,7 @@ class EditController {
         } else {
             $title = $entry->title;
             $content = $entry->latestVersion()->content;
+            add_scripts(array('preview'));
             render_view('master', compact('entry', 'title', 'content'));
         }
     }

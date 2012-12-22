@@ -49,4 +49,4 @@ foo [bar](bar)zz [apple](apple)
 [link](baidu.com)
 z[baz](baz). Se[what](what)
 ';
-test(Version::parse($origin), $dst, 'parse');
+test(parse_inner_link($origin), $dst, 'parse inner link');
