@@ -19,6 +19,11 @@ class Version extends BasicModel
     public function toHtml()
     {
         require_once AppFile::lib('markdown' . DS . 'markdown');
-        return Markdown($this->content);
+        return Markdown(self::parse($this->content));
+    }
+
+    public static function parse($str)
+    {
+        return preg_replace('/\[(.+?)\](?!\()/', '[$1]($1)', $str);
     }
 }

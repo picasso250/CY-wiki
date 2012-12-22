@@ -14,7 +14,7 @@ function user_init()
     $need_login = in_array($controller, $GLOBALS['config']['page_need_login']);
     if ($need_login && !$user) {
         if (!$by_ajax) {
-            $cur_url = reset(explode('?', $_SERVER['REQUEST_URI']));
+            $cur_url = urlencode($_SERVER['REQUEST_URI']);
             redirect('login?back=' . $cur_url);
         } else {
             output_error(403, 'you need to login');

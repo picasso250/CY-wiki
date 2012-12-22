@@ -37,3 +37,16 @@ test(Entry::count(), 1, 'create Entry');
 
 begin_test();
 test(!Entry::has($title), false, 'has Entry?');
+
+begin_test();
+$origin = '
+foo [bar]zz [apple]
+[link](baidu.com)
+z[baz]. Se[what]
+';
+$dst = '
+foo [bar](bar)zz [apple](apple)
+[link](baidu.com)
+z[baz](baz). Se[what](what)
+';
+test(Version::parse($origin), $dst, 'parse');

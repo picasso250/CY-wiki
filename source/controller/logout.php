@@ -1,8 +1,13 @@
 <?php
 !defined('IN_APP') && exit('ILLEGAL EXECUTION');
 
-if ($has_login) {
-    $user->logout();
-}
+class LogoutController {
+    public function __construct()
+    {
+        if ($GLOBALS['has_login']) {
+            $GLOBALS['user']->logout();
+        }
 
-redirect();
+        redirect();
+    }
+}
