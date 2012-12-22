@@ -1,0 +1,26 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+if (!isset($url))
+    $url = ROOT . $GLOBALS['controller'];
+if (!isset($title)) 
+    $title = '';
+if (!isset($content))
+    $content = '';
+if (!isset($reason))
+    $reason = '';
+
+$id = _req('id');
+?>
+<form action="<?= $url ?>" method="post">
+  <?php if ($id): ?>
+    <input type="hidden" name="id" value="<?= $id ?>">
+  <?php endif ?>
+  <input type="text" name="title" class="span12" placeholder="标题" value="<?= $title ?>">
+  <textarea name="content" class="span12 " rows="16"><?= $content ?></textarea>
+  <input type="text" name="reason" class = "span12" placeholder="原因（可选）" value="<?= $reason ?>">
+  <input type="submit" class="btn btn-primary" value="<?= $buttonText ?>">
+  <button class="btn">预览</button>
+</form>

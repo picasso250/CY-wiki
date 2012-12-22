@@ -30,9 +30,9 @@ class Entry extends BasicModel
         return $entry;
     }
 
-    public static function edit(User $user, $title, $content)
+    public function edit(User $user, $title, $content, $reason)
     {
-        $version = Version::create($user, $this, $content);
+        $version = Version::create($user, $this, $content, $reason);
         parent::update(array('latest' => $version->id, 'title' => $title));
     }
 }

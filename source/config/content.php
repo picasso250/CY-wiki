@@ -9,7 +9,8 @@ $config['site']['name'] = 'CY wiki';
 
 // pages need login
 $config['page_need_login'] = array(
-    'create');
+    'create',
+    'edit');
 
 // error info
 $config['error']['info'] = array(
