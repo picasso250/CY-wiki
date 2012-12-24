@@ -9,7 +9,7 @@ class MyController {
     {
         $user = $GLOBALS['user'];
 
-        if ($action === 'edit') {
+        if ($GLOBALS['action'] === 'edit') {
             $name = _post('name');
             if ($name) {
                 $user->update(compact('name'));
@@ -19,6 +19,8 @@ class MyController {
             if ($newPass && $user->checkPassword(_post('oldPass'))) {
                 $user->changePassword($newPass);
             }
+
+            redirect($GLOBALS['controller']);
         }
         render_view('master', compact('user'));
     }

@@ -11,7 +11,7 @@ class RegisterController {
             if ($user) {
                 $user->update('name', $email);
                 $user->login();
-                redirect('user');
+                redirect('my');
             }
         }
 
