@@ -11,3 +11,8 @@ body {
 .container-narrow > hr {
     margin: 30px 0;
 }
+
+/*form in modal*/
+.modal form {
+    margin-bottom: 0;
+}

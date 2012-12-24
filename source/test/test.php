@@ -31,8 +31,8 @@ $user->update('name', '小池');
 test($user->email, $email, 'create User');
 
 begin_test();
-$title = 'hello';
-$user->createEntry($title, 'word');
+$title = '第一个词条';
+$user->createEntry($title, '词条内容');
 test(Entry::count(), 1, 'create Entry');
 
 begin_test();

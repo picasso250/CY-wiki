@@ -33,6 +33,11 @@ class User extends BasicModel
         return $info ? new self($info) : false;
     }
 
+    public function checkPassword($password)
+    {
+        return md5($password) === $this->password;
+    }
+
     public function changePassword($new_password)
     {
         $this->update(array('password' => md5($new_password)));

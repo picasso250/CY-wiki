@@ -12,7 +12,7 @@ else
 
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_ROOT', __DIR__ . DS . '..' . DS);
-define('CORE_ROOT', APP_ROOT . 'app_core' . DS);
+define('CORE_ROOT', APP_ROOT . 'core' . DS);
 
 include APP_ROOT . 'config/common.php';
 
