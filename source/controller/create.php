@@ -12,8 +12,10 @@ class CreateController {
             $content = _post('content');
             $reason = _post('reason');
 
-            $GLOBALS['user']->createEntry($title, $content);
-            redirect("wiki/$title");
+            if ($title) {
+                $GLOBALS['user']->createEntry($title, $content);
+                redirect("wiki/$title");
+            }
         }
         render_view('master');
     }

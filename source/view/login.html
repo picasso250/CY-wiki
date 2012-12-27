@@ -5,17 +5,20 @@
  */
 ?>
 <form action="<?= ROOT ?>login" method="post" class="form-horizontal">
+  <?php if ($msg): ?>
+    <div class="alert alert-error"><?= $msg ?></div>
+  <?php endif ?>
   <input type="hidden" name="back" value="<?= _req('back') ?>">
   <div class="control-group">
-    <label class="control-label" for="inputUsername">用户名：</label>
+    <label class="control-label" for="inputUsername">邮箱：</label>
     <div class="controls">
-      <input type="text" name="username" id="inputUsername" placeholder="" value="<?= $username ?>">
+      <input type="text" name="username" id="inputUsername" placeholder="" value="<?= $username ?>" class="required">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="inputPassword">密码：</label>
     <div class="controls">
-      <input type="password" name="password" id="inputPassword" placeholder="">
+      <input type="password" name="password" id="inputPassword" placeholder="" class="required">
     </div>
   </div>
   <div class="control-group">

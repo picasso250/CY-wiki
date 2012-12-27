@@ -15,6 +15,7 @@ class RegisterController {
             }
         }
 
+        add_scripts('jquery.validate.min');
         render_view('master', compact('email'));
     }
 }

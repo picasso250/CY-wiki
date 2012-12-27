@@ -5,6 +5,8 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
+define('PRD', 0);
+
 if (isset($_SERVER['HTTP_APPNAME'])) { // on server
     define('ON_SERVER', TRUE);
     

@@ -17,6 +17,10 @@ require TEST_ROOT . 'lib.php'; // functions for test
 
 include_once APP_ROOT . 'config/common.php';
 
+if ((defined('PRD') ? PRD : true)) {
+    exit();
+}
+
 require_once CORE_ROOT . 'function.php';
 require_once CORE_ROOT . 'app.php';
 
