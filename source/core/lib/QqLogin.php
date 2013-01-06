@@ -15,7 +15,7 @@
  *     'app_id'=>'10030730x',
  *     'app_key'=>'689e7841d05f33cf83f085ecce5be3cx',
  *     'scope'=>implode(',', array('get_user_info')),
- *     'callback'=> !ON_SERVER?'http://appname.sinaapp.com/appname/login':'http://appname.sinaapp.com/login',
+ *     'callback'=> !ON_SAE ? 'http://appname.sinaapp.com/appname/login':'http://appname.sinaapp.com/login',
  * );
  */
 

@@ -211,7 +211,7 @@ function image_file_resize($tmp_img_file, $image_type, $crop, $new_width, $new_h
 
 // write file content to dst
 function write_upload($content, $file_name) {
-    if (ON_SERVER) {
+    if (ON_SAE) {
         $up_domain = UP_DOMAIN;
         $s = new SaeStorage();
         $s->write($up_domain , $file_name , $content);
