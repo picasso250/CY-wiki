@@ -18,6 +18,7 @@ class CreateController extends BasicController {
                 redirect("wiki/$title");
             }
         }
+        add_scripts('preview');
         render_view('master');
     }
 }

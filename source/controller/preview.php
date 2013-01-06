@@ -8,6 +8,6 @@ class PreviewController extends BasicController {
     public function __construct()
     {
         $content = _post('content');
-        echo markdown_parse($content);
+        echo '<div class="wiki-content">', markdown_parse($content), '</div>';
     }
 }
