@@ -20,4 +20,9 @@ class Version extends BasicModel
     {
         return markdown_parse($this->content);
     }
+
+    public function editor()
+    {
+        return new User($this->editor);
+    }
 }
