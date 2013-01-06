@@ -11,6 +11,11 @@ class Entry extends BasicModel
         $info = Pdb::fetchRow('*', self::table(), array('title = ?' => $title));
         return $info ? new self($info) : false;
     }
+
+    public function versions()
+    {
+        return Version::search()->filterBy('entry', $this)->orderBy('id DESC')->find();
+    }
     
     public function latestVersion()
     {

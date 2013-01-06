@@ -1,0 +1,19 @@
+<?php
+!defined('IN_APP') && exit('ILLEGAL EXECUTION');
+/**
+ * @author  ryan <cumt.xiaochi@gmail.com>
+ */
+?>
+<h1>Diff <?= $entry->title ?></h1>
+<div class="row-fluid">
+  <div class="span6">
+    <div><?= $leftVer->reason ?: 'Edited' ?></div>
+    <div class="label"><?= $leftVer->edited ?></div>
+    <div><?= nl2br($leftVer->content) ?></div>
+  </div>
+  <div class="span6">
+    <div><?= $rightVer->reason ?: 'Edited' ?></div>
+    <div class="label"><?= $rightVer->edited ?></div>
+    <div><?= $rightHtml ?></div>
+  </div>
+</div>

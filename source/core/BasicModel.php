@@ -118,7 +118,7 @@ class BasicModel
             $class = ucfirst($name);
             return new $class($this->info[$prop]);
         } else {
-            throw new Exception("no $prop", 1);
+            throw new Exception("no $prop when call $name", 1);
         }
     }
 
@@ -130,5 +130,11 @@ class BasicModel
     public static function search()
     {
         return new Searcher(get_called_class());
+    }
+
+    public static function relationMap()
+    {
+        $self = get_called_class();
+        return isset($self::$relationMap) ? $self::$relationMap : array();
     }
 }
