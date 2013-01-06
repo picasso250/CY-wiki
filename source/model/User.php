@@ -15,7 +15,8 @@ class User extends BasicModel
     {
         $arr = array(
             'email' => $email,
-            'password' => md5($password));
+            'password' => md5($password),
+            'created=NOW()' => null);
         Pdb::insert($arr, self::table());
         return new self(Pdb::lastInsertId());
     }
