@@ -1,8 +1,10 @@
 <?php
 
-class LoginController {
+class LoginController extends BasicController {
     public function __construct()
     {
+        parent::__construct();
+        
         $username = _post('username');
         $password = _post('password');
 

@@ -12,7 +12,7 @@ class Searcher
     private $class = null;
     private $conds = array();
     private $orders = array();
-    private $limit = null;
+    private $limit = 1000;
     private $offset = 0;
     
     public function __construct($class)
@@ -26,7 +26,8 @@ class Searcher
         if (is_a($value, 'BasicModel'))
             $value = $value->id;
 
-        $relationMap = $this->class::relationMap();
+        $class = $this->class;
+        $relationMap = $class::relationMap();
         $tableDotKey = preg_match('/\b(\w+)\.(\w+)\b/', $exp, $matches); // table.key = ?
         $tableDotId = isset($relationMap[$exp]);
         
@@ -49,6 +50,7 @@ class Searcher
     public function orderBy($exp)
     {
         $this->orders[] = "$this->table.$exp";
+        return $this;
     }
 
     public function limit()
@@ -73,8 +75,9 @@ class Searcher
         $limitStr = $this->limit ? "LIMIT $this->limit" : '';
         $tail = "$limitStr OFFSET $this->offset";
         $ids = Pdb::fetchAll($field, $this->table, $this->conds, $this->orders, $tail);
-        return array_map(function ($id) use($this->class) {
-            return new $this->class($id);
+        $class = $this->class;
+        return array_map(function ($id) use($class) {
+            return new $class($id);
         }, $ids);
     }
 }

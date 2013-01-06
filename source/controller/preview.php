@@ -4,7 +4,7 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class PreviewController {
+class PreviewController extends BasicController {
     public function __construct()
     {
         $content = _post('content');

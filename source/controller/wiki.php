@@ -1,10 +1,7 @@
 <?php
 
-class WikiController {
-    public function __construct()
-    {
-    }
-
+class WikiController extends BasicController 
+{
     public function __call($name, $args)
     {
         $entry = Entry::has($name);

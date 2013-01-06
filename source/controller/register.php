@@ -1,6 +1,6 @@
 <?php
 
-class RegisterController {
+class RegisterController extends BasicController {
     public function __construct()
     {
         $email = _post('email');

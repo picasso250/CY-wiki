@@ -4,9 +4,11 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class MyController {
+class MyController extends BasicController {
     public function __construct()
     {
+        parent::__construct();
+        
         $user = $GLOBALS['user'];
 
         if ($GLOBALS['action'] === 'edit') {

@@ -29,7 +29,7 @@ class BasicModel
     public static function create($info = array())
     {
         $self = get_called_class();
-        Pdb::insert($info, $self::$table);
+        Pdb::insert($info, self::table());
         return new $self(Pdb::lastInsertId());
     }
 

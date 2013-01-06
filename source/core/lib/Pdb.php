@@ -219,6 +219,7 @@ class PdoHelper {
 
     function __construct($config, $ms = self::MASTER) {
         if (empty($config)) {
+            d($config);
             throw new \Exception('config emtpy');
         }
         extract($config); // 安全？

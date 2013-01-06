@@ -4,9 +4,10 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class CreateController {
+class CreateController extends BasicController {
     public function __construct()
     {
+        parent::__construct();
         if ($GLOBALS['by_post']) {
             $title = _post('title');
             $content = _post('content');

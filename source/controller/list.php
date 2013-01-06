@@ -4,10 +4,11 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class ListController {
+class ListController extends BasicController {
     public function __construct()
     {
-        $entries = Entry::read();
+        parent::__construct();
+        $entries = Entry::search()->find();
         render_view('master', compact('entries'));
     }
 }

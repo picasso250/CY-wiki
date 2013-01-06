@@ -34,7 +34,8 @@ class Entry extends BasicModel
 
     public static function recents($num = 10)
     {
-        return self::read(array('limit' => $num, 'sort' => 'updated DESC'));
+        return self::search()->limit($num)->orderBy('updated DESC')->find();
+        // return self::read(array('limit' => $num, 'sort' => 'updated DESC'));
     }
 
     public function edit(User $user, $title, $content, $reason)

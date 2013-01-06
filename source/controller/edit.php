@@ -4,9 +4,11 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 
-class EditController {
+class EditController extends BasicController {
     public function __construct()
     {
+        parent::__construct();
+        
         $id = _req('id');
         $entry = new Entry($id);
 
