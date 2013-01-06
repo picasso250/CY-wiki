@@ -7,13 +7,15 @@
 <h1>Diff <?= $entry->title ?></h1>
 <div class="row-fluid">
   <div class="span6">
+    <div><?= $leftVer->editor()->name ?></div>
     <div><?= $leftVer->reason ?: 'Edited' ?></div>
     <div class="label"><?= $leftVer->edited ?></div>
     <div><?= nl2br($leftVer->content) ?></div>
   </div>
   <div class="span6">
+    <div><?= $rightVer->editor()->name ?></div>
     <div><?= $rightVer->reason ?: 'Edited' ?></div>
     <div class="label"><?= $rightVer->edited ?></div>
-    <div><?= $rightHtml ?></div>
+    <div class="diff-content"><?= $rightHtml ?></div>
   </div>
 </div>

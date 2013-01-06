@@ -28,3 +28,13 @@ body {
     margin-top: 30px;
     border-bottom: 1px solid #999;
 }
+
+
+.diff-content ins {
+    color: green;
+    background-color: #C1ECC1;
+}
+.diff-content del {
+    color: red;
+    background-color: #FCDDDD;
+}
