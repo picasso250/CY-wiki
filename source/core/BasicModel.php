@@ -1,5 +1,7 @@
 <?php
 
+require_once CORE_ROOT . 'Searcher.php';
+
 /**
  * @author ryan
  */
