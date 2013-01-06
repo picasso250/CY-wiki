@@ -18,7 +18,8 @@ class DiffController extends BasicController {
             $leftVer = $versions[1];
         }
 
-        $rightHtml = diff($leftVer->content, $rightVer->content);
+        // $rightHtml = diff($leftVer->content, $rightVer->content);
+        $rightHtml = nl2br($rightVer->content);
 
         render_view('master', compact('entry', 'leftVer', 'rightVer', 'rightHtml'));
     }
