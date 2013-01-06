@@ -40,6 +40,9 @@ class Searcher
             $refTable = $relationMap[$exp];
             $this->conds["$refTable.id=?"] = $value;
         } else {
+            if (strpos($exp, '?') === false && $value !== null) {
+                $exp .= '=?';
+            }
             $this->conds[$exp] = $value;
         }
         if ($tableDotKey || $tableDotId)
