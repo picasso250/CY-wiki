@@ -3,6 +3,8 @@
 class RegisterController extends BasicController {
     public function __construct()
     {
+        parent::__construct();
+        
         $email = _post('email');
         $password = _post('password');
 
