@@ -50,3 +50,6 @@ CREATE TABLE `version` (
   `edited` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--------------------------------------------------
+ALTER TABLE  `entry` ADD  `creator` INT( 10 ) UNSIGNED NOT NULL AFTER  `id`;

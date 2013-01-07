@@ -6,6 +6,10 @@
 
 class Version extends BasicModel
 {
+    public static $relationMap = array(
+        'editor' => 'user',
+        'entry' => 'entry');
+    
     public static function create(User $u, Entry $e, $content, $reason = '')
     {
         return parent::create(array(

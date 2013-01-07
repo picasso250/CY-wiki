@@ -6,6 +6,8 @@
 
 class Entry extends BasicModel
 {
+    public static $relationMap = array('creator' => 'user');
+
     public static function has($title)
     {
         $info = Pdb::fetchRow('*', self::table(), array('title = ?' => $title));

@@ -7,7 +7,11 @@ class WikiController extends BasicController
         $entry = Entry::has($name);
         if ($entry) {
             // show
-            render_view('master', compact('entry'));
+            $watching = false;
+            if ($GLOBALS['has_login']) {
+                $watching = Watch::is($GLOBALS['user'], $entry);
+            }
+            render_view('master', compact('entry', 'watching'));
         } else {
             redirect("create?title=$name");
         }

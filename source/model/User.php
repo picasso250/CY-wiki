@@ -69,4 +69,14 @@ class User extends BasicModel
             return false;
         }
     }
+
+    public function createdEntries()
+    {
+        return Entry::search()->filterBy('creator', $this)->orderBy('id DESC')->find();
+    }
+
+    public function editedEntries()
+    {
+        return Entry::search()->join(Version::search()->filterBy('editor', $this))->find();
+    }
 }

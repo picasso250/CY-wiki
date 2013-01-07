@@ -21,32 +21,33 @@ class Searcher
         $this->table = $class::table();
     }
 
+    public function table()
+    {
+        return $this->table;
+    }
+
     public function filterBy($exp, $value)
     {
         if (is_a($value, 'BasicModel'))
             $value = $value->id;
 
-        $class = $this->class;
-        $relationMap = $class::relationMap();
+        $relationMap = $this->relationMap();
         $tableDotKey = preg_match('/\b(\w+)\.(\w+)\b/', $exp, $matches); // table.key = ?
         $tableDotId = isset($relationMap[$exp]);
-        
+
         if ($tableDotKey) {
             $ref = $matches[1];
             $refKey = $matches[2];
             $refTable = $relationMap[$ref];
             $this->conds["$refTable.$refKey=?"] = $value;
-        } elseif ($tableDotId) {
-            $refTable = $relationMap[$exp];
-            $this->conds["$refTable.id=?"] = $value;
+            $this->conds["$this->table.$ref=$refTable.id"] = null;
         } else {
             if (strpos($exp, '?') === false && $value !== null) {
                 $exp .= '=?';
             }
             $this->conds[$exp] = $value;
         }
-        if ($tableDotKey || $tableDotId)
-            $this->conds["$this->table.$ref=$refTable.id"] = null;
+            
         return $this;
     }
 
@@ -72,6 +73,14 @@ class Searcher
         return $this;
     }
 
+    public function join(Searcher $s)
+    {
+        $rMap = array_flip($s->relationMap());
+        $refKey = $rMap[$this->table];
+        $this->conds[$s->table() . ".$refKey=$this->table.id"] = null;
+        return $this;
+    }
+
     public function find()
     {
         $field = "$this->table.id";
@@ -82,5 +91,15 @@ class Searcher
         return array_map(function ($id) use($class) {
             return new $class($id);
         }, $ids);
+    }
+
+    // ------------ private section -----------------
+
+    private function relationMap()
+    {
+        if (isset($this->relationMap))
+            return $this->relationMap;
+        $class = $this->class;
+        return $this->relationMap = $class::relationMap();
     }
 }
