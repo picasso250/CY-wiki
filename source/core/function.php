@@ -185,28 +185,22 @@ function make_image($image, $opt=array()) {
 
 function image_file_resize($tmp_img_file, $image_type, $crop, $new_width, $new_height) {
     list($width, $height) = getimagesize($tmp_img_file);
-    switch ($image_type) {
-        case 'jpg':
-        case 'jpeg':
-        case 'pjpeg': // yes, this strange type is for ie
-            $src = imagecreatefromjpeg($tmp_img_file);
-            $dst = image_resize($src, $crop, $width, $height, $new_width, $new_height);
-            imagejpeg($dst, $tmp_img_file);
-            break;
-        case 'png':
-        case 'x-png': // for ie
-            $src = imagecreatefrompng($tmp_img_file);
-            $dst = image_resize($src, $crop, $width, $height, $new_width, $new_height);
-            imagepng($dst, $tmp_img_file);
-            break;
-        case 'gif': // ??
-            $src = imagecreatefromgif($tmp_img_file);
-            $dst = image_resize($src, $crop, $width, $height, $new_width, $new_height);
-            imagegif($dst, $tmp_img_file);
-            break;
-        default :
-            break;
+    $image_type_map = array(
+        'jpg' => 'jpeg',
+        'jpeg' => 'jpeg',
+        'pjpeg' => 'jpeg',
+        'png' => 'png',
+        'x-png' => 'png');
+    $image_type = strtolower($image_type);
+    if (isset($image_type_map[$image_type]))
+        $image_type = $image_type_map[$image_type];
+    $src = call_user_func('imagecreatefrom' . $image_type, $tmp_img_file);
+    try {
+        $dst = image_resize($src, $crop, $width, $height, $new_width, $new_height);
+    } catch (Exception $e) {
+        throw $e;
     }
+    call_user_func('image' . $image_type, $dst, $tmp_img_file);
 }
 
 // write file content to dst
