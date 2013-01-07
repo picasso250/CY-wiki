@@ -25,6 +25,7 @@ I write the model.
 瞄上了这个 Diff 库：
 
 [PHP-FineDiff](https://github.com/gorhill/PHP-FineDiff)
+貌似这个不能 diff 中文，维基百科中文站是如何做到的？
 
 前端框架使用 BootStrap
 
@@ -35,3 +36,9 @@ WireFrame
 http://picasso250.github.com/CY-wiki/wireframe/start.html
 
 也别什么线框图了，直接就照抄 GitHub 的 wiki 得了。
+
+todo
+---------------
+1. 我创建的页面
+2. 我编辑过的页面
+3. 关注功能
