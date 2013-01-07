@@ -26,6 +26,12 @@ class User extends BasicModel
         return Pdb::exists(self::table(), array('email = ?' => $email));
     }
 
+    public static function hasName($name)
+    {
+        $info = Pdb::fetchRow('*', self::table(), array('name=?' => $name));
+        return $info ? new self($info) : false;
+    }
+
     public static function check($email, $password)
     {
         $info = Pdb::fetchRow('*', self::table(), array(

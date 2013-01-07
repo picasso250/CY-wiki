@@ -4,16 +4,25 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 ?>
-<h1>Diff <?= $entry->title ?></h1>
+<h1>
+  Diff
+  <a href="<?= ROOT . 'wiki/' . $entry->title ?>"><?= $entry->title ?></a>
+</h1>
 <div class="row-fluid">
   <div class="span6">
-    <div><?= $leftVer->editor()->name ?></div>
+    <div>
+      <?php $u = $leftVer->editor(); ?>
+      <a href="<?= ROOT . 'user/' . $u->name ?>"><?= $u->name ?></a>
+    </div>
     <div><?= $leftVer->reason ?: 'Edited' ?></div>
     <div class="label"><?= $leftVer->edited ?></div>
     <div><?= nl2br($leftVer->content) ?></div>
   </div>
   <div class="span6">
-    <div><?= $rightVer->editor()->name ?></div>
+    <div>
+      <?php $u = $rightVer->editor(); ?>
+      <a href="<?= ROOT . 'user/' . $u->name ?>"><?= $u->name ?></a>
+    </div>
     <div><?= $rightVer->reason ?: 'Edited' ?></div>
     <div class="label"><?= $rightVer->edited ?></div>
     <div class="diff-content"><?= $rightHtml ?></div>
