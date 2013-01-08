@@ -4,8 +4,6 @@ class MywikiController extends BasicController
 {
     public function __construct()
     {
-        echo 'todo';
-        exit;
         parent::__construct();
 
         if (!$GLOBALS['has_login'])

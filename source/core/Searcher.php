@@ -10,6 +10,7 @@ class Searcher
 {
     private $table = null;
     private $class = null;
+    private $tables = array();
     private $conds = array();
     private $orders = array();
     private $limit = 1000;
@@ -19,6 +20,7 @@ class Searcher
     {
         $this->class = $class;
         $this->table = $class::table();
+        $this->tables[] = $this->table;
     }
 
     public function table()
@@ -75,9 +77,13 @@ class Searcher
 
     public function join(Searcher $s)
     {
+        $st = $s->table();
         $rMap = array_flip($s->relationMap());
         $refKey = $rMap[$this->table];
-        $this->conds[$s->table() . ".$refKey=$this->table.id"] = null;
+        $this->conds[$st . ".$refKey=$this->table.id"] = null;
+
+        if (!in_array($st, $this->tables))
+            $this->tables[] = $st;
         return $this;
     }
 
@@ -86,7 +92,7 @@ class Searcher
         $field = "$this->table.id";
         $limitStr = $this->limit ? "LIMIT $this->limit" : '';
         $tail = "$limitStr OFFSET $this->offset";
-        $ids = Pdb::fetchAll($field, $this->table, $this->conds, $this->orders, $tail);
+        $ids = Pdb::fetchAll($field, $this->tables, $this->conds, $this->orders, $tail);
         $class = $this->class;
         return array_map(function ($id) use($class) {
             return new $class($id);

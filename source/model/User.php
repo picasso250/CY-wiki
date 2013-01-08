@@ -72,11 +72,22 @@ class User extends BasicModel
 
     public function createdEntries()
     {
+        // $this->updateCreatedEntries();
         return Entry::search()->filterBy('creator', $this)->orderBy('id DESC')->find();
     }
 
     public function editedEntries()
     {
         return Entry::search()->join(Version::search()->filterBy('editor', $this))->find();
+    }
+
+    public function updateCreatedEntries()
+    {
+        $ids = Pdb::fetchAll('id', Entry::table());
+        foreach ($ids as $id) {
+            $v = Pdb::fetchRow('*', Version::table(), array('entry=?' => $id), array('id ASC'));
+            $e = new Entry($id);
+            $e->update('creator', $v['editor']);
+        }
     }
 }
