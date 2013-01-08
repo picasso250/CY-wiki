@@ -8,6 +8,18 @@
   Diff
   <a href="<?= ROOT . 'wiki/' . $entry->title ?>"><?= $entry->title ?></a>
 </h1>
+
+<?php $pl = $l+1; $pr = $r+1; ?>
+<?php $nl = $l-1; $nr = $r-1; ?>
+<ul class="pager">
+  <li class="previous <?= ($pl > $versionCount) ? 'disabled' : '' ?>">
+    <a href="<?= ($pl > $versionCount) ? '#' : htmlspecialchars("?id=$id&r=$pr&l=$pl") ?>">&larr; Older</a>
+  </li>
+  <li class="next <?= ($nr < 0) ? 'disabled' : '' ?>">
+    <a href="<?= ($nr < 0) ? '#' : htmlspecialchars("?id=$id&r=$nr&l=$nl") ?>">Newer &rarr;</a>
+  </li>
+</ul>
+
 <div class="row-fluid">
   <div class="span6">
     <div>

@@ -12,15 +12,27 @@ class DiffController extends BasicController {
         $id = _req('id');
         $entry = new Entry($id);
 
+        $r = _req('r') ?: 0;
+        $l = _req('l') ?: 1;
+
         $versions = $entry->versions();
-        $rightVer = $versions[0];
-        if (isset($versions[1])) {
-            $leftVer = $versions[1];
+        $versionCount = count($versions);
+        if ($versionCount < 2) {
+            return;
         }
 
-        // $rightHtml = diff($leftVer->content, $rightVer->content);
+        if (isset($versions[$r]))
+            $rightVer = $versions[$r];
+        else 
+            $rightVer = $rightVer[0];
+
+        if (isset($versions[$l]))
+            $leftVer = $versions[$l];
+        else
+            $leftVer = $versions[1];
+
         $rightHtml = nl2br($rightVer->content);
 
-        render_view('master', compact('entry', 'leftVer', 'rightVer', 'rightHtml'));
+        render_view('master', compact('entry', 'r', 'l', 'id', 'versionCount', 'leftVer', 'rightVer', 'rightHtml'));
     }
 }
