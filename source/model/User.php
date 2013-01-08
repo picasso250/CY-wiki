@@ -72,7 +72,7 @@ class User extends BasicModel
 
     public function createdEntries()
     {
-        $this->updateCreatedEntries();
+        // $this->updateCreatedEntries();
         return Entry::search()->filterBy('creator', $this)->orderBy('id DESC')->find();
     }
 

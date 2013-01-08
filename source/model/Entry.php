@@ -27,7 +27,8 @@ class Entry extends BasicModel
     public static function create(User $user, $title, $content)
     {
         $entry = parent::create(array(
-            'title' => $title, 
+            'title' => $title,
+            'creator' => $user->id,
             'created = NOW()' => null));
 
         $version = Version::create($user, $entry, $content);
@@ -42,7 +43,6 @@ class Entry extends BasicModel
     public static function recents($num = 10)
     {
         return self::search()->limit($num)->orderBy('updated DESC')->find();
-        // return self::read(array('limit' => $num, 'sort' => 'updated DESC'));
     }
 
     public function edit(User $user, $title, $content, $reason)
