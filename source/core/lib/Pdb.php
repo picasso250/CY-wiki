@@ -388,7 +388,7 @@ class PdoHelper {
             $fields = implode(',', $fields);
 
         // maybe we don't need this...
-        if (preg_match('/[\(\)]|AS/', $fields)) {
+        if (preg_match('/[\(\)]|AS/', $fields) && !preg_match('/DISTINCT/', $fields)) {
             $where_verb = "HAVING";
         } else {
             $where_verb = "WHERE";

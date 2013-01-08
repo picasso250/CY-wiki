@@ -15,6 +15,7 @@ class Searcher
     private $orders = array();
     private $limit = 1000;
     private $offset = 0;
+    private $distinct = false;
     
     public function __construct($class)
     {
@@ -45,7 +46,7 @@ class Searcher
             $this->conds["$this->table.$ref=$refTable.id"] = null;
         } else {
             if (strpos($exp, '?') === false && $value !== null) {
-                $exp .= '=?';
+                $exp = "$this->table.$exp=?";
             }
             $this->conds[$exp] = $value;
         }
@@ -81,22 +82,33 @@ class Searcher
         $rMap = array_flip($s->relationMap());
         $refKey = $rMap[$this->table];
         $this->conds[$st . ".$refKey=$this->table.id"] = null;
+        $this->conds += $s->conds;
 
         if (!in_array($st, $this->tables))
             $this->tables[] = $st;
         return $this;
     }
 
+    public function distinct()
+    {
+        $this->distinct = true;
+        return $this;
+    }
+
     public function find()
     {
         $field = "$this->table.id";
+        if ($this->distinct)
+            $field = "DISTINCT($field)";
         $limitStr = $this->limit ? "LIMIT $this->limit" : '';
         $tail = "$limitStr OFFSET $this->offset";
         $ids = Pdb::fetchAll($field, $this->tables, $this->conds, $this->orders, $tail);
+
         $class = $this->class;
-        return array_map(function ($id) use($class) {
+        $ret = array_map(function ($id) use($class) {
             return new $class($id);
         }, $ids);
+        return $ret;
     }
 
     // ------------ private section -----------------

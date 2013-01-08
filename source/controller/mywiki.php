@@ -11,5 +11,7 @@ class MywikiController extends BasicController
         $user = $GLOBALS['user'];
         $createdEntries = $user->createdEntries();
         $editedEntries = $user->editedEntries();
+
+        render_view('master', compact('createdEntries', 'editedEntries'));
     }
 }

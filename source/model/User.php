@@ -72,13 +72,17 @@ class User extends BasicModel
 
     public function createdEntries()
     {
-        // $this->updateCreatedEntries();
+        $this->updateCreatedEntries();
         return Entry::search()->filterBy('creator', $this)->orderBy('id DESC')->find();
     }
 
     public function editedEntries()
     {
-        return Entry::search()->join(Version::search()->filterBy('editor', $this))->find();
+        return Entry::search()
+            ->join(Version::search()->filterBy('editor', $this))
+            ->orderBy('updated DESC')
+            ->distinct()
+            ->find();
     }
 
     public function updateCreatedEntries()
