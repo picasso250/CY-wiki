@@ -111,7 +111,7 @@ function image_resize ($file_content, $crop, $width, $height, $new_width, $new_h
     if ($new_width < 1 || $new_height < 1) {
         throw new Exception('specified size too small');
     } else if ($width<$new_width || $height<$new_height) {
-        throw new Exception('too small');
+        throw new Exception('image size too small', 42);
     } else {
         $dst = imagecreatetruecolor($new_width, $new_height);
         $src_x = 0;
@@ -120,14 +120,83 @@ function image_resize ($file_content, $crop, $width, $height, $new_width, $new_h
             $ratio = $width / $height;
             $new_ratio = $new_width / $new_height;
             if ($ratio > $new_ratio) {
+                $old_width = $width;
                 $width = ceil($new_ratio * $height);
+                $src_x = ($old_width - $width) / 2;
             } else if ($ratio < $new_ratio) {
+                $old_height = $height;
                 $height = ceil($width / $new_ratio);
+                $src_y = ($old_height - $height) / 2;
             }
         }
-        imagecopyresampled($dst, $file_content, 0, 0, $src_x, $src_y, $new_width, $new_height, $width, $height);
+        $s = imagecopyresampled($dst, $file_content, 0, 0, $src_x, $src_y, $new_width, $new_height, $width, $height);
         return $dst;
     }
+}
+
+function image_file_resize($tmp_img_file, $image_type, $crop, $new_width, $new_height) {
+    list($width, $height) = getimagesize($tmp_img_file);
+    $image_type_map = array(
+        'jpg' => 'jpeg',
+        'jpeg' => 'jpeg',
+        'pjpeg' => 'jpeg',
+        'png' => 'png',
+        'x-png' => 'png');
+    $image_type = strtolower($image_type);
+    if (isset($image_type_map[$image_type]))
+        $image_type = $image_type_map[$image_type];
+    $src = call_user_func('imagecreatefrom' . $image_type, $tmp_img_file);
+    try {
+        $dst = image_resize($src, $crop, $width, $height, $new_width, $new_height);
+    } catch (Exception $e) {
+        throw $e;
+    }
+
+    ob_start();
+    call_user_func('image' . $image_type, $dst);
+    $ret = ob_get_contents();
+    ob_end_clean();
+    return $ret;
+}
+
+// from file
+function make_image2($imagefile, $opt = array())
+{
+    // deault option
+    $opt = array_merge(array(
+        'crop' => 0,
+        'resize' => 0,
+        'width' => 50,
+        'height' => 50,
+        'list' => null,
+    ), $opt);
+    
+    $extention = $image_type = end(explode('.', $imagefile));
+
+    $tmp_img = $imagefile;
+    
+    return _make_image($tmp_img, $image_type, $extention, $opt);
+}
+
+function _make_image($tmp_img, $image_type, $extention, $opt)
+{
+    $resize = $opt['resize'];
+    $opt_list = $opt['list'];
+    if (!$opt_list) {
+        $opt_list = array($opt);
+    }
+
+    $ret = array();
+    foreach ($opt_list as $opt_) {
+        if ($resize) {
+            $content = image_file_resize($tmp_img, $image_type, $opt_['crop'], $opt_['width'], $opt_['height']);
+        } else {
+            $content = file_get_contents($tmp_img);
+        }
+        $file_name = uniqid() . '.' . $extention;
+        $ret[] = write_upload($content, $file_name);
+    }
+    return count($ret) === 1 ? reset($ret) : $ret;
 }
 
 /**
@@ -156,51 +225,11 @@ function make_image($image, $opt=array()) {
         $extention = file_ext($image['name']);
         
         $tmp_img = $image['tmp_name'];
-        
-        $resize = $opt['resize'];
-        $ret_list = $opt['list'];
-        if ($ret_list) {
-            $ret = array();
-            foreach ($ret_list as $opt_) {
-                if ($resize) {
-                    image_file_resize($tmp_img, $image_type, $opt_['crop'], $opt_['width'], $opt_['height']);
-                }
-                $content = file_get_contents($tmp_img);
-                $file_name = uniqid() . '.' . $extention;
-                $ret[] = write_upload($content, $file_name);
-            }
-            return $ret;
-        } else {
-            if ($resize) {
-                image_file_resize($tmp_img, $image_type, $opt['crop'], $opt['width'], $opt['height']);
-            }
-            $content = file_get_contents($tmp_img);
-            $file_name = uniqid() . '.' . $extention;
-            return write_upload($content, $file_name);
-        }
+
+        return _make_image($tmp_img, $file_type, $extention, $opt);
     } else { // maybe throw??
         return '';
     }
-}
-
-function image_file_resize($tmp_img_file, $image_type, $crop, $new_width, $new_height) {
-    list($width, $height) = getimagesize($tmp_img_file);
-    $image_type_map = array(
-        'jpg' => 'jpeg',
-        'jpeg' => 'jpeg',
-        'pjpeg' => 'jpeg',
-        'png' => 'png',
-        'x-png' => 'png');
-    $image_type = strtolower($image_type);
-    if (isset($image_type_map[$image_type]))
-        $image_type = $image_type_map[$image_type];
-    $src = call_user_func('imagecreatefrom' . $image_type, $tmp_img_file);
-    try {
-        $dst = image_resize($src, $crop, $width, $height, $new_width, $new_height);
-    } catch (Exception $e) {
-        throw $e;
-    }
-    call_user_func('image' . $image_type, $dst, $tmp_img_file);
 }
 
 // write file content to dst
