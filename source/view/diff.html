@@ -11,12 +11,14 @@
 
 <?php $pl = $l+1; $pr = $r+1; ?>
 <?php $nl = $l-1; $nr = $r-1; ?>
+<?php $hasP = ($pl > ($versionCount-1)); ?>
+<?php $hasN = ($nr < 0); ?>
 <ul class="pager">
-  <li class="previous <?= ($pl > $versionCount) ? 'disabled' : '' ?>">
-    <a href="<?= ($pl > $versionCount) ? '#' : htmlspecialchars("?id=$id&r=$pr&l=$pl") ?>">&larr; Older</a>
+  <li class="previous <?= $hasP ? 'disabled' : '' ?>">
+    <a href="<?= $hasP ? '#' : htmlspecialchars("?id=$id&r=$pr&l=$pl") ?>">&larr; <?= !$hasP ? '更老版本' : '没有更老的版本' ?></a>
   </li>
-  <li class="next <?= ($nr < 0) ? 'disabled' : '' ?>">
-    <a href="<?= ($nr < 0) ? '#' : htmlspecialchars("?id=$id&r=$nr&l=$nl") ?>">Newer &rarr;</a>
+  <li class="next <?= $hasN ? 'disabled' : '' ?>">
+    <a href="<?= $hasN ? '#' : htmlspecialchars("?id=$id&r=$nr&l=$nl") ?>"><?= !$hasN ? '更新版本' : '没有更新版本' ?> &rarr;</a>
   </li>
 </ul>
 
