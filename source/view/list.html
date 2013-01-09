@@ -6,6 +6,8 @@
 ?>
 <ul>
   <?php foreach ($entries as $entry): ?>
-    <li><a href="<?= ROOT . "wiki/$entry->title" ?>"><?= $entry->title ?></a></li>
+    <li>
+      <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a>
+    </li>
   <?php endforeach ?>
 </ul>

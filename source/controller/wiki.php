@@ -4,6 +4,7 @@ class WikiController extends BasicController
 {
     public function __call($name, $args)
     {
+        $name = urldecode($name);
         $entry = Entry::has($name);
         if ($entry) {
             // show

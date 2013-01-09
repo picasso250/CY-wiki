@@ -8,6 +8,12 @@ class Entry extends BasicModel
 {
     public static $relationMap = array('creator' => 'user');
 
+    public function urlTitle()
+    {
+        $urlTitle = urlencode($this->title);
+        return $urlTitle;
+    }
+
     public static function has($title)
     {
         $info = Pdb::fetchRow('*', self::table(), array('title = ?' => $title));

@@ -21,7 +21,7 @@
     <ul>
       <?php foreach ($recents as $entry): ?>
         <li>
-          <a href="<?= ROOT . "wiki/$entry->title" ?>"><?= htmlspecialchars($entry->title) ?></a>
+          <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a>
         </li>
       <?php endforeach ?>
     </ul>

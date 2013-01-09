@@ -16,7 +16,7 @@
     <?php foreach ($createdEntries as $entry): ?>
       <tr>
         <td>
-          <a href="<?= ROOT . "wiki/$entry->title" ?>"><?= $entry->title ?></a>
+          <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a>
         </td>
         <td><?= $entry->created ?></td>
       </tr>
@@ -36,7 +36,7 @@
     <?php foreach ($editedEntries as $entry): ?>
       <tr>
         <td>
-          <a href="<?= ROOT . "wiki/$entry->title" ?>"><?= $entry->title ?></a>
+          <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a>
         </td>
         <td><?= $entry->latestVersion()->edited ?></td>
       </tr>
