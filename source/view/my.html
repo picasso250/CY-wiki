@@ -7,9 +7,9 @@
 <h1>用户信息</h1>
 <dl class="dl-horizontal well">
   <dt>邮箱：</dt>
-  <dd><?= $user->email ?></dd>
+  <dd><?= htmlspecialchars($user->email) ?></dd>
   <dt>昵称：</dt>
-  <dd><?= $user->name ?></dd>
+  <dd><?= htmlspecialchars($user->name) ?></dd>
 </dl>
 
 <div class="well">

@@ -22,7 +22,18 @@ class Version extends BasicModel
 
     public function toHtml()
     {
-        return markdown_parse($this->content);
+        $content = $this->content;
+        $content = markdown_parse($content);
+
+        // I don't know why it works, but, it DOES work
+        $dangerList = array(
+            '<script>' => htmlspecialchars('<script>'), 
+            '<\/script>' => htmlspecialchars('</script>'));
+        foreach ($dangerList as $exp => $replStr) {
+            $content = preg_replace('/' . $exp . '/', $replStr, $content);
+        }
+        
+        return $content;
     }
 
     public function editor()

@@ -31,7 +31,8 @@ class Searcher
 
     public function filterBy($exp, $value)
     {
-        if (is_a($value, 'BasicModel'))
+        // is_object() 判断不可少，不然SAE上会把String也认为Ojbect
+        if (is_object($value) && is_a($value, 'BasicModel'))
             $value = $value->id;
 
         $relationMap = $this->relationMap();
