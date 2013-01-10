@@ -6,6 +6,7 @@
 
 function init_var()
 {
+    // don't use $_SERVER['REDIRECT_URL'], it is not good for urldecode()
     $req_uri = reset(explode('?', $_SERVER['REQUEST_URI']));
     $arr = explode('/', trim($req_uri, '/'));
 
