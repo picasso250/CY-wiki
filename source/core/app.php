@@ -6,11 +6,7 @@
 
 function init_var()
 {
-    if (isset($_SERVER['REDIRECT_URL'])) {
-        $req_uri = $_SERVER['REDIRECT_URL'];
-    } else {
-        $req_uri = reset(explode('?', $_SERVER['REQUEST_URI']));
-    }
+    $req_uri = reset(explode('?', $_SERVER['REQUEST_URI']));
     $arr = explode('/', trim($req_uri, '/'));
 
     // c is controller
