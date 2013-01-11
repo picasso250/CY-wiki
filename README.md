@@ -16,18 +16,18 @@ Feature
 站在巨人的肩膀上
 ------------------
 
-I write the model.
+* I write the model.
 
-使用这个 Markdown 库：
+* 使用这个 Markdown 库：
 
-[php-markdown](https://github.com/michelf/php-markdown)
+ [php-markdown](https://github.com/michelf/php-markdown)
 
-瞄上了这个 Diff 库：
+* 瞄上了这个 Diff 库：
 
-[PHP-FineDiff](https://github.com/gorhill/PHP-FineDiff)
-貌似这个不能 diff 中文，维基百科中文站是如何做到的？
+ [PHP-FineDiff](https://github.com/gorhill/PHP-FineDiff)
+ 貌似这个不能 diff 中文，维基百科中文站是如何做到的？
 
-前端框架使用 BootStrap
+* 前端框架使用 BootStrap
 
 
 WireFrame

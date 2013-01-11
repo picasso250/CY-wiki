@@ -17,7 +17,14 @@ define('DS', DIRECTORY_SEPARATOR);
 define('APP_ROOT', __DIR__ . DS);
 define('CORE_ROOT', APP_ROOT . 'core' . DS);
 
-include APP_ROOT . 'config/common.php';
+// 这里可以用 apc
+if (apc_exists('config')) {
+    $config = apc_fetch('config');
+}
+// if (!(isset($config) && $config !== false))
+    include APP_ROOT . 'config/common.php';
+//     apc_store('config', $config);
+// }
 
 // if not debug, mute all error reportings
 if (!(defined('DEBUG') ? DEBUG : 0)) {
