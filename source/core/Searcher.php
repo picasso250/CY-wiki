@@ -103,7 +103,22 @@ class Searcher
             $field = "DISTINCT($field)";
         $limitStr = $this->limit ? "LIMIT $this->limit" : '';
         $tail = "$limitStr OFFSET $this->offset";
-        $ids = Pdb::fetchAll($field, $this->tables, $this->conds, $this->orders, $tail);
+        if ($this->conds) {
+            $condStr = implode('AND', array_keys($this->conds));
+            $a = array_filter(array_values($this->conds));
+            $values = array();
+            foreach ($a as $v) {
+                if (is_array($v)) {
+                    $values += $v;
+                } else {
+                    $values[] = $v;
+                }
+            }
+            $conds = array($condStr => $values);
+        } else {
+            $conds = '';
+        }
+        $ids = Sdb::fetch($field, $this->tables, $conds, $this->orders, $tail);
 
         $class = $this->class;
         $ret = array_map(function ($id) use($class) {
