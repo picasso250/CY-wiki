@@ -6,6 +6,7 @@ class BasicController {
         // db config
         $db_config = $GLOBALS['config']['db'];
         Pdb::setConfig($db_config);
+        Sdb::setConfig($db_config);
 
         // login
         $GLOBALS['user'] = $user = User::current();
