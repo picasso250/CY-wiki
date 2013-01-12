@@ -15,8 +15,8 @@ class Watch extends BasicModel
 
     public static function is(User $user, Entry $entry)
     {
-        $conds = array('user' => $user->id, 'entry' => $entry->id);
-        $info = Pdb::fetchRow('*', self::table(), $conds);
+        $conds = array('user=? AND entry=?' => array($user->id, $entry->id));
+        $info = Sdb::fetchRow('*', self::table(), $conds);
         return $info ? new self($info) : false;
     }
 

@@ -16,7 +16,7 @@ class Entry extends BasicModel
 
     public static function has($title)
     {
-        $info = Pdb::fetchRow('*', self::table(), array('title = ?' => $title));
+        $info = Sdb::fetchRow('*', self::table(), array('title = ?' => $title));
         return $info ? new self($info) : false;
     }
 

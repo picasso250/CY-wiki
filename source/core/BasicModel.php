@@ -39,20 +39,8 @@ class BasicModel
         $data = array($str => $values);
 
         $self = get_called_class();
-        Pdb::insert($info, self::table());
-        return new $self(Pdb::lastInsertId());
-    }
-
-    public static function count($conds = array())
-    {
-        $self = get_called_class();
-        if (method_exists($self, 'buildDbArgs')) {
-            list($tables, $conds) = $self::buildDbArgs($conds);
-        } else {
-            $tables = self::table(); // self must be BasicModel
-            $conds = array();
-        }
-        return Pdb::count($tables, $conds);
+        Sdb::insert($data, self::table());
+        return new $self(Sdb::lastInsertId());
     }
 
     public function toArray()
@@ -72,7 +60,7 @@ class BasicModel
 
     public function exists()
     {
-        return Pdb::exists(static::table(), $this->selfCond());
+        return false !== Sdb::fetchRow('id', static::table(), $this->selfCond());
     }
 
     public function selfCond()
@@ -142,7 +130,7 @@ class BasicModel
 
     public function del()
     {
-        Pdb::del(self::table(), $this->selfCond());
+        Sdb::del(self::table(), $this->selfCond());
     }
 
     public static function search()

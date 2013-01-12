@@ -123,6 +123,7 @@ class Sdb
     public static function insert($data, $table, $tail='') {
         $dataStr = reset(array_keys($data));
         $bindValues = reset($data);
+        d($data);
 
         $sql = "INSERT INTO $table SET $dataStr $tail";
         $db = self::getDb();
@@ -133,12 +134,13 @@ class Sdb
             $s->bindValue($i, $value);
         }
         if (!$s->execute()) {
-            throw new Exception($s->errorInfo());
+            throw new Exception(end($s->errorInfo()));
         }
     }
 
     public static function lastInsertId() {
-        return $this->db->lastInsertId();
+        $db = self::getDb();
+        return $db->lastInsertId();
     }
 
     public static function update($data, $table, $conds = null, $tail = '') {
@@ -166,10 +168,36 @@ class Sdb
             $s->bindValue($i, $value);
         }
         if (!$s->execute()) {
-            throw new Exception($s->errorInfo());
+            throw new Exception(end($s->errorInfo()));
         }
 
         self::addLog($sql, $bindValues);
+    }
+
+    public static function del($table, $conds) {
+        if (is_array($conds)) {
+            $p = reset($conds); // para or list of para
+            $conds = reset(array_keys($conds));
+            if (is_array($p)) {
+                $bindValues = $p;
+            } else {
+                $bindValues = array($p);
+            }
+        }
+
+        $where = $conds ? "WHERE $conds" : '';
+        $sql = "DELETE FROM $table $where";
+        $db = self::getDb();
+        $s = $db->prepare($sql);
+
+        $i = 0;
+        foreach ($bindValues as $value) {
+            $i++;
+            $s->bindValue($i, $value);
+        }
+        if (!$s->execute()) {
+            throw new Exception(end($s->errorInfo()));
+        }
     }
 
     private static function addLog($sql, $paras = null)

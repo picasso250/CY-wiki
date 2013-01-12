@@ -17,26 +17,24 @@ class User extends BasicModel
             'email' => $email,
             'password' => md5($password),
             'created=NOW()' => null);
-        Pdb::insert($arr, self::table());
-        return new self(Pdb::lastInsertId());
+        return parent::create($arr);
     }
 
     public static function has($email)
     {
-        return Pdb::exists(self::table(), array('email = ?' => $email));
+        return false !== Sdb::fetchRow('*', self::table(), array('email = ?' => $email));
     }
 
     public static function hasName($name)
     {
-        $info = Pdb::fetchRow('*', self::table(), array('name=?' => $name));
+        $info = Sdb::fetchRow('*', self::table(), array('name=?' => $name));
         return $info ? new self($info) : false;
     }
 
     public static function check($email, $password)
     {
-        $info = Pdb::fetchRow('*', self::table(), array(
-            'email = ?' => $email,
-            'password = ?' => md5($password)));
+        $conds = array('email=? AND password=?' => array($email, md5($password)));
+        $info = Sdb::fetchRow('*', self::table(), $conds);
         return $info ? new self($info) : false;
     }
 
@@ -87,9 +85,9 @@ class User extends BasicModel
 
     public function updateCreatedEntries()
     {
-        $ids = Pdb::fetchAll('id', Entry::table());
+        $ids = Sdb::fetchAll('id', Entry::table());
         foreach ($ids as $id) {
-            $v = Pdb::fetchRow('*', Version::table(), array('entry=?' => $id), array('id ASC'));
+            $v = Sdb::fetchRow('*', Version::table(), array('entry=?' => $id), array('id ASC'));
             $e = new Entry($id);
             $e->update('creator', $v['editor']);
         }
