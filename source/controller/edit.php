@@ -10,6 +10,9 @@ class EditController extends BasicController {
         parent::__construct();
         
         $id = _req('id');
+        if (!$id) {
+            redirect();
+        }
         $entry = new Entry($id);
 
         if ($GLOBALS['by_post']) {

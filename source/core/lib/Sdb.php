@@ -65,7 +65,7 @@ class Sdb
         if (self::$db !== null)
             return self::$db;
         $config = self::$config;
-        return self::$db =  new PDO($config['dsn'], $config['username'], $config['password']);
+        return self::$db =  new PDO($config['dsn'], $config['username'], $config['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8';"));
     }
 
     // $conds : string
@@ -118,6 +118,58 @@ class Sdb
     {
         $arr = self::fetch($fields, $tables, $conds, $orderbys, $tail . ' LIMIT 1');
         return $arr ? reset($arr) : false;
+    }
+
+    public static function insert($data, $table, $tail='') {
+        $dataStr = reset(array_keys($data));
+        $bindValues = reset($data);
+
+        $sql = "INSERT INTO $table SET $dataStr $tail";
+        $db = self::getDb();
+        $s = $db->prepare($sql);
+        $i = 0;
+        foreach ($bindValues as $value) {
+            $i++;
+            $s->bindValue($i, $value);
+        }
+        if (!$s->execute()) {
+            throw new Exception($s->errorInfo());
+        }
+    }
+
+    public static function lastInsertId() {
+        return $this->db->lastInsertId();
+    }
+
+    public static function update($data, $table, $conds = null, $tail = '') {
+
+        $db = self::getDb();
+        $dataStr = reset(array_keys($data));
+        $bindValues = reset($data);
+
+        if (is_array($conds)) {
+            $p = reset($conds); // para or list of para
+            $conds = reset(array_keys($conds));
+            if (is_array($p)) {
+                $bindValues = array_merge($bindValues, $p);
+            } else {
+                $bindValues[] = $p;
+            }
+        }
+
+        $where = $conds? "WHERE $conds" : '';
+        $sql = "UPDATE $table SET $dataStr $where $tail";
+        $s = $db->prepare($sql);
+        $i = 0;
+        foreach ($bindValues as $value) {
+            $i++;
+            $s->bindValue($i, $value);
+        }
+        if (!$s->execute()) {
+            throw new Exception($s->errorInfo());
+        }
+
+        self::addLog($sql, $bindValues);
     }
 
     private static function addLog($sql, $paras = null)

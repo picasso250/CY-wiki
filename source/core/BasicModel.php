@@ -28,6 +28,16 @@ class BasicModel
 
     public static function create($info = array())
     {
+        $b = array_map(function ($key) {
+            if (strpos($key, '=') === false)
+                return "$key=?";
+            else
+                return $key;
+        }, array_keys($info));
+        $str = implode(',', $b);
+        $values = array_filter(array_values($info));
+        $data = array($str => $values);
+
         $self = get_called_class();
         Pdb::insert($info, self::table());
         return new $self(Pdb::lastInsertId());
@@ -79,15 +89,23 @@ class BasicModel
             return camel2under($self); // camal to underscore
     }
 
-    public function update($key_or_array, $value = null)
+    public function update($a, $value = null)
     {
         if($value !== null) { // given by key => value
-            $arr = array($key_or_array => $value);
+            $data = array("$a=?" => $value);
         } else {
-            $arr = $key_or_array;
+            $b = array_map(function ($key) {
+                if (strpos($key, '=') === false)
+                    return "$key=?";
+                else
+                    return $key;
+            }, array_keys($a));
+            $str = implode(',', $b);
+            $values = array_filter(array_values($a));
+            $data = array($str => $values);
         }
         $self = get_called_class();
-        Pdb::update($arr, $self::table(), $this->selfCond()); // why we need that? that doesn't make any sense
+        Sdb::update($data, $self::table(), $this->selfCond()); // why we need that? that doesn't make any sense
         $this->info = $this->info(); // refresh data
     }
 
