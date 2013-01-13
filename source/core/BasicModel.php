@@ -35,12 +35,22 @@ class BasicModel
                 return $key;
         }, array_keys($info));
         $str = implode(',', $b);
-        $values = array_filter(array_values($info));
+        d($info);
+        $values = self::notNull($info);
+
+        d($values);
         $data = array($str => $values);
 
         $self = get_called_class();
         Sdb::insert($data, self::table());
         return new $self(Sdb::lastInsertId());
+    }
+
+    public static function notNull($info)
+    {
+        return array_filter(array_values($info), function ($e) {
+            return ($e !== null && $e !== false);
+        });
     }
 
     public function toArray()
@@ -89,7 +99,7 @@ class BasicModel
                     return $key;
             }, array_keys($a));
             $str = implode(',', $b);
-            $values = array_filter(array_values($a));
+            $values = self::notNull($a);
             $data = array($str => $values);
         }
         $self = get_called_class();

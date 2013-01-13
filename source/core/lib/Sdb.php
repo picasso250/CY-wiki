@@ -123,7 +123,7 @@ class Sdb
     public static function insert($data, $table, $tail='') {
         $dataStr = reset(array_keys($data));
         $bindValues = reset($data);
-        d($data);
+        d($bindValues);
 
         $sql = "INSERT INTO $table SET $dataStr $tail";
         $db = self::getDb();
