@@ -35,10 +35,8 @@ class BasicModel
                 return $key;
         }, array_keys($info));
         $str = implode(',', $b);
-        d($info);
         $values = self::notNull($info);
 
-        d($values);
         $data = array($str => $values);
 
         $self = get_called_class();
