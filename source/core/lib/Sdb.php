@@ -158,6 +158,9 @@ class Sdb
             if (is_array($p)) {
                 $bindValues = array_merge($bindValues, $p);
             } else {
+                if (!is_array($bindValues)) {
+                    throw new Exception("$bindValues not array", 1);
+                }
                 $bindValues[] = $p;
             }
         }

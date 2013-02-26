@@ -27,10 +27,11 @@
           <tr>
             <td><?= $i+1 ?></td>
             <td><a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a></td>
-            <td><?= $entry->latestVersion()->editor()->name ?></td>
+            <td><a href="<?php echo ROOT.'user/'.$entry->latestVersion()->editor()->id ?>"><?= $entry->latestVersion()->editor()->name ?></a></td>
           </tr>
         <?php endforeach ?>
       </tbody>
+
     </table>
   </div>
   <div class="span6"></div>

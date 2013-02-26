@@ -88,7 +88,7 @@ class BasicModel
     public function update($a, $value = null)
     {
         if($value !== null) { // given by key => value
-            $data = array("$a=?" => $value);
+            $data = array("$a=?" => array($value));
         } else {
             $b = array_map(function ($key) {
                 if (strpos($key, '=') === false)

@@ -34,9 +34,8 @@ $version = $entry->latestVersion();
 <h1 class="wiki-title"><?= $entry->title ?></h1>
 <div class="wiki-content"><?= $version->toHtml() ?></div>
 <div class="row-fluid">
-  <div class="span8"></div>
-  <div class="span4">
-    最后编辑者：
-    <span class=""><?= $version->editor()->name ?></span>
+  <div class="span6"></div>
+  <div class="span6">
+    <span class=""><?= $version->editor()->name ?></span> 最后编辑于 <span><?php echo $version->edited ?></span>
   </div>
 </div>
