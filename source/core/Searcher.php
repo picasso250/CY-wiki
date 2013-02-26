@@ -104,7 +104,7 @@ class Searcher
         $limitStr = $this->limit ? "LIMIT $this->limit" : '';
         $tail = "$limitStr OFFSET $this->offset";
         if ($this->conds) {
-            $condStr = implode('AND', array_keys($this->conds));
+            $condStr = implode(' AND ', array_keys($this->conds));
             $a = array_filter(array_values($this->conds));
             $values = array();
             foreach ($a as $v) {

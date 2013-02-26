@@ -12,9 +12,13 @@ class UserController extends BasicController
         echo User::has($email) ? 'false' : 'true';
     }
 
-    public function __call($name, $args)
+    public function __call($a, $args)
     {
-        $u = User::hasName($name);
-        render_view('master', compact('u'));
+        if (is_numeric($a)) {
+            $user = new User($a);
+        } else {
+            $user = User::hasName($a);
+        }
+        render_view('master', compact('user'));
     }
 }

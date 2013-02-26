@@ -9,6 +9,19 @@ function i(&$param, $or='') {
     return isset($param)? $param : $or;
 }
 
+function g($a)
+{
+    if (is_string($a)) { // get
+        return isset($GLOBALS[$a]) ? $GLOBALS[$a] : null;
+    } elseif (is_array($a)) { // set
+        foreach ($a as $key => $value) {
+            $GLOBALS[$key] = $value;
+        }
+    } else {
+        throw new Exception("$a is not good arg when get from $GLOBALS");
+    }
+}
+
 function _req($para, $default = '') 
 {
     return isset($_REQUEST[$para]) && $_REQUEST[$para] ? trim($_REQUEST[$para]) : $default;
