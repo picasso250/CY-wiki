@@ -33,6 +33,17 @@ class DiffController extends BasicController {
 
         $rightHtml = nl2br($rightVer->content);
 
+        $rightContent = $rightVer->content;
+        $leftContent = $leftVer->content;
+
+        $la = explode("\n", $leftContent);
+        $ra = explode("\n", $rightContent);
+        $dl = array_diff($la, $ra);
+        $dr = array_diff($ra, $la);
+        d($dl);
+        d($dr);
+        $leftHtml = '';
+
         render_view('master', compact('entry', 'r', 'l', 'id', 'versionCount', 'leftVer', 'rightVer', 'rightHtml'));
     }
 }
