@@ -40,7 +40,7 @@ class Entry extends BasicModel
         $version = Version::create($user, $entry, $content);
 
         $entry->update(array(
-            'latest' => $version->id, 
+            'latest' => $version->id,
             'updated = NOW()' => null));
 
         return $entry;
