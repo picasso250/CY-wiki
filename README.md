@@ -39,6 +39,9 @@ http://picasso250.github.com/CY-wiki/wireframe/start.html
 
 todo
 ---------------
-1. 我创建的页面
-2. 我编辑过的页面
-3. 关注功能
+- [ ] 我创建的页面
+- [ ] 我编辑过的页面
+- [ ] 关注功能
+- [ ] diff
+- [ ] markdown help
+- [ ] preview loading
