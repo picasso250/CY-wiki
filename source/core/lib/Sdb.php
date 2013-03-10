@@ -146,7 +146,11 @@ class Sdb
 
         $db = self::getDb();
         $dataStr = reset(array_keys($data));
+
         $bindValues = reset($data);
+        if (is_string($bindValues)) {
+            $bindValues = array($bindValues);
+        }
 
         if (is_array($conds)) {
             $p = reset($conds); // para or list of para
