@@ -38,12 +38,41 @@ class DiffController extends BasicController {
 
         $la = explode("\n", $leftContent);
         $ra = explode("\n", $rightContent);
-        $dl = array_diff($la, $ra);
-        $dr = array_diff($ra, $la);
-        d($dl);
-        d($dr);
-        $leftHtml = '';
 
-        render_view('master', compact('entry', 'r', 'l', 'id', 'versionCount', 'leftVer', 'rightVer', 'rightHtml'));
+        $a = diff_line($la, $ra);
+        $rightHtml = $this->diffToHtml($a);
+        $leftHtml = $this->linesToHtml($la);
+
+        render_view('master', compact('entry', 'r', 'l', 'id', 'versionCount', 'leftVer', 'rightVer', 'rightHtml', 'leftHtml'));
+    }
+
+    private function diffToHtml($diffArr)
+    {
+        $arr = array_map(function ($line) {
+            if (is_string($line)) {
+                return "<p>$line</p>";
+            } elseif (is_array($line)) {
+                $key = key($line);
+                $arr = current($line);
+                $map = array(
+                    '+' => 'ins',
+                    '-' => 'del',
+                );
+                $class = $map[$key];
+                $arr = array_map(function ($line) use($class) {
+                    return '<p class="'.$class.'">'.$line.'</p>';
+                }, $arr);
+                return implode('', $arr);
+            }
+        }, $diffArr);
+        return implode("\n", $arr);
+    }
+
+    private function linesTohtml($lines)
+    {
+        $arr = array_map(function ($line) {
+            return "<p>$line</p>";
+        }, $lines);
+        return implode("\n", $arr);
     }
 }

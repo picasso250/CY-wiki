@@ -30,11 +30,11 @@ body {
 }
 
 
-.diff-content ins {
+.diff-content .ins {
     color: green;
     background-color: #C1ECC1;
 }
-.diff-content del {
+.diff-content .del {
     color: red;
     background-color: #FCDDDD;
 }
