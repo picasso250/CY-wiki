@@ -108,10 +108,10 @@ function great_common_sub($a, $b)
     $max_len = 0;
     foreach ($a as $ka => $ea) {
         foreach ($b as $kb => $eb) {
-            if ($ea == $eb) {
+            if (trim($ea) == trim($eb)) {
                 $kka = $ka+1;
                 $kkb = $kb+1;
-                while (isset($a[$kka]) && isset($b[$kkb]) && $a[$kka] == $b[$kkb]) {
+                while (isset($a[$kka]) && isset($b[$kkb]) && trim($a[$kka]) == trim($b[$kkb])) {
                     $kka++;
                     $kkb++;
                 }
