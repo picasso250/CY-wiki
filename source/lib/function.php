@@ -96,11 +96,8 @@ function diff_word($a, $b)
     return array(diff_word($la, $lb), $cs, diff($ra, $rb));
 }
 
-
-
-
-// O(n^4)
-function great_common_sub($a, $b)
+// 最长公共子数组
+function longest_common_sub($a, $b)
 {
     if (!$a || !$b) {
         return false;
@@ -134,15 +131,15 @@ function great_common_sub($a, $b)
     return false;
 }
  
-function _diff_line($a, $b, &$arr)
+function _diff_line($a, $b, &$arra, &$arrb)
 {
-    $cs = great_common_sub($a, $b);
+    $cs = longest_common_sub($a, $b);
     if (empty($cs)) {
         if ($a) {
-            $arr[] = array('-' => $a);
+            $arra[] = array('-' => $a);
         }
         if ($b) {
-            $arr[] = array('+' => $b);
+            $arrb[] = array('+' => $b);
         }
         return;
     }
@@ -154,20 +151,24 @@ function _diff_line($a, $b, &$arr)
     $ra = array_slice($a, $ap+$cslen);
     $rb = array_slice($b, $bp+$cslen);
     if ($l = _diff_line($la, $lb, $arr)) {
-        $arr = array_merge($arr, $l);
+        $arra = array_merge($arra, $l);
+        $arrb = array_merge($arrb, $l);
     }
     if ($cslen) {
-        $arr = array_merge($arr, array_slice($a, $ap, $cslen));
+        $arra = array_merge($arra, array_slice($a, $ap, $cslen));
+        $arrb = array_merge($arrb, array_slice($b, $bp, $cslen));
     }
     if ($r = _diff_line($ra, $rb, $arr)) {
-        $arr = array_merge($arr, $r);
+        $arra = array_merge($arra, $r);
+        $arrb = array_merge($arrb, $r);
     }
     return;
 }
 
 function diff_line($a, $b)
 {
-    $arr = array();
-    _diff_line($a, $b, $arr);
-    return $arr;
+    $arra = array();
+    $arrb = array();
+    _diff_line($a, $b, $arra, $arrb);
+    return array($arra, $arrb);
 }
