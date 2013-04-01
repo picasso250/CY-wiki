@@ -135,6 +135,7 @@ function _diff_line($a, $b, &$arra, &$arrb)
 {
     $cs = longest_common_sub($a, $b);
     if (empty($cs)) {
+        // if ($a && $b && count($a) == $count($b)) {change}
         if ($a) {
             $arrb[] = array('D' => $a);
         }
