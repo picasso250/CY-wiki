@@ -136,10 +136,10 @@ function _diff_line($a, $b, &$arra, &$arrb)
     $cs = longest_common_sub($a, $b);
     if (empty($cs)) {
         if ($a) {
-            $arra[] = array('A' => $a);
+            $arrb[] = array('D' => $a);
         }
         if ($b) {
-            $arrb[] = array('D' => $b);
+            $arra[] = array('A' => $b);
         }
         return;
     }

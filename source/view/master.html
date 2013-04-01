@@ -15,8 +15,8 @@ $siteConfig = $GLOBALS['config']['site'];
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="<?= _css('bootstrap') ?>" rel="stylesheet">
-    <link href="<?= _css('bootstrap-responsive') ?>" rel="stylesheet">
+    <link href="<?= _css('bootstrap', 1) ?>" rel="stylesheet">
+    <link href="<?= _css('bootstrap-responsive', 1) ?>" rel="stylesheet">
     <link href="<?= _css('style') ?>" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -46,8 +46,8 @@ $siteConfig = $GLOBALS['config']['site'];
 
     </div> <!-- /container -->
 
-    <script src="<?= _js('jquery-1.8.3.min') ?>"></script>
-    <script src="<?= _js('bootstrap') ?>"></script>
+    <script src="<?= _js('jquery-1.8.3.min', 1) ?>"></script>
+    <script src="<?= _js('bootstrap', 1) ?>"></script>
 
     <?php foreach ($GLOBALS['page']['scripts'] as $src): ?>
       <script type="text/javascript" src="<?= _js($src) ?>"></script>

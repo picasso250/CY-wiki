@@ -8,4 +8,4 @@
  */
 
 define('JS_VER',  'A1215');
-define('CSS_VER', 'B0106b');
+define('CSS_VER', 'B03');

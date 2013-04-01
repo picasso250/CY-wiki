@@ -72,12 +72,18 @@ function js_var($var_name, $arr) {
     return js_node('', $var_name.'='.json_encode($arr));
 }
 
-function _css($file) {
-    return ROOT . "view/css/$file.css";
+function _css($file, $version = null) {
+    if (!$version) {
+        $version = CSS_VER;
+    }
+    return ROOT . "view/css/$file.css?v=$version";
 }
 
-function _js($file) {
-    return ROOT . "view/js/$file.js";
+function _js($file, $version = null) {
+    if (!$version) {
+        $version = JS_VER;
+    }
+    return ROOT . "view/js/$file.js?v=$version";
 }
 
 /* debug helpers */
