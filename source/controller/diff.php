@@ -31,17 +31,15 @@ class DiffController extends BasicController {
         else
             $leftVer = $versions[1];
 
-        $rightHtml = nl2br($rightVer->content);
-
         $rightContent = $rightVer->content;
         $leftContent = $leftVer->content;
 
         $la = explode("\n", $leftContent);
         $ra = explode("\n", $rightContent);
 
-        $a = diff_line($la, $ra);
+        list($a, $b) = diff_line($la, $ra);
         $rightHtml = $this->diffToHtml($a);
-        $leftHtml = $this->linesToHtml($la);
+        $leftHtml = $this->linesToHtml($b);
 
         render_view('master', compact('entry', 'r', 'l', 'id', 'versionCount', 'leftVer', 'rightVer', 'rightHtml', 'leftHtml'));
     }
