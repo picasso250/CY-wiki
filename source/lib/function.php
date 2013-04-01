@@ -136,10 +136,10 @@ function _diff_line($a, $b, &$arra, &$arrb)
     $cs = longest_common_sub($a, $b);
     if (empty($cs)) {
         if ($a) {
-            $arra[] = array('-' => $a);
+            $arra[] = array('A' => $a);
         }
         if ($b) {
-            $arrb[] = array('+' => $b);
+            $arrb[] = array('D' => $b);
         }
         return;
     }
@@ -150,7 +150,7 @@ function _diff_line($a, $b, &$arra, &$arrb)
     $lb = array_slice($b, 0, $bp);
     $ra = array_slice($a, $ap+$cslen);
     $rb = array_slice($b, $bp+$cslen);
-    if ($l = _diff_line($la, $lb, $arr)) {
+    if ($l = _diff_line($la, $lb, $arra, $arrb)) {
         $arra = array_merge($arra, $l);
         $arrb = array_merge($arrb, $l);
     }
@@ -158,7 +158,7 @@ function _diff_line($a, $b, &$arra, &$arrb)
         $arra = array_merge($arra, array_slice($a, $ap, $cslen));
         $arrb = array_merge($arrb, array_slice($b, $bp, $cslen));
     }
-    if ($r = _diff_line($ra, $rb, $arr)) {
+    if ($r = _diff_line($ra, $rb, $arra, $arrb)) {
         $arra = array_merge($arra, $r);
         $arrb = array_merge($arrb, $r);
     }

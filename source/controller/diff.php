@@ -39,7 +39,7 @@ class DiffController extends BasicController {
 
         list($a, $b) = diff_line($la, $ra);
         $rightHtml = $this->diffToHtml($a);
-        $leftHtml = $this->linesToHtml($b);
+        $leftHtml = $this->diffToHtml($b);
 
         render_view('master', compact('entry', 'r', 'l', 'id', 'versionCount', 'leftVer', 'rightVer', 'rightHtml', 'leftHtml'));
     }
@@ -53,8 +53,8 @@ class DiffController extends BasicController {
                 $key = key($line);
                 $arr = current($line);
                 $map = array(
-                    '+' => 'ins',
-                    '-' => 'del',
+                    'A' => 'ins',
+                    'D' => 'del',
                 );
                 $class = $map[$key];
                 $arr = array_map(function ($line) use($class) {
