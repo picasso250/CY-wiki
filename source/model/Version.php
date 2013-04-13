@@ -12,8 +12,7 @@ class Version extends BasicModel
     
     public static function create($info)
     {
-        $info = array(
-            'edited = NOW()' => null);
+        $info[] = 'edited = NOW()';
         return parent::create($info);
     }
 

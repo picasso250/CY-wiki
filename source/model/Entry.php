@@ -50,6 +50,16 @@ class Entry extends BasicModel
             'latest' => $version,
             'updated = NOW()'));
 
+        if (isset($info['category_name'])) {
+            $category = Category::search()->by('name', $info['category_name'])->find(1);
+            if ($category) {
+                $category = $category[0];
+            } else {
+                $category = Category::create(array('name' => $info['category_name']));
+            }
+            $entry->update('category', $category);
+        }
+
         return $entry;
     }
 

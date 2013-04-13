@@ -14,7 +14,6 @@ class CreateController extends BasicController {
             $info['content'] = _post('content');
             $info['reason'] = _post('reason');
             $info['category_name'] = _post('category_name');
-
             if ($title) {
                 $entry = Entry::create($info);
                 redirect("wiki/$entry->title");
