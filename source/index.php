@@ -15,6 +15,7 @@ define('IN_APP', 1);
 
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_ROOT', __DIR__ . DS);
+define('AROOT', APP_ROOT); // for lazy db
 define('CORE_ROOT', APP_ROOT . 'core' . DS);
 
 include APP_ROOT . 'config/common.php';
