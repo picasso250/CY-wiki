@@ -30,18 +30,25 @@ class Entry extends BasicModel
         return new Version($this->latest);
     }
 
-    public static function create(User $user, $title, $content)
+    public static function create($info)
     {
-        $entry = parent::create(array(
-            'title' => $title,
-            'creator' => $user->id,
-            'created = NOW()' => null));
+        $user = g('user');
+        $entryInfo = array(
+            'creator' => $user,
+            'created = NOW()'
+        );
+        $entry = parent::create($entryInfo);
 
-        $version = Version::create($user, $entry, $content);
+        $versionInfo = array(
+            'editor' => $user,
+            'entry' => $entry,
+            'content' => $info['content'],
+        );
+        $version = Version::create($versionInfo);
 
         $entry->update(array(
-            'latest' => $version->id,
-            'updated = NOW()' => null));
+            'latest' => $version,
+            'updated = NOW()'));
 
         return $entry;
     }

@@ -9,13 +9,15 @@ class CreateController extends BasicController {
     {
         parent::__construct();
         if ($GLOBALS['by_post']) {
-            $title = _post('title');
-            $content = _post('content');
-            $reason = _post('reason');
+            $info = array();
+            $info['title'] = _post('title');
+            $info['content'] = _post('content');
+            $info['reason'] = _post('reason');
+            $info['category_name'] = _post('category_name');
 
             if ($title) {
-                $GLOBALS['user']->createEntry($title, $content);
-                redirect("wiki/$title");
+                $entry = Entry::create($info);
+                redirect("wiki/$entry->title");
             }
         }
         add_scripts('preview');

@@ -6,11 +6,6 @@
 
 class User extends BasicModel
 {
-    public function createEntry($title, $content)
-    {
-        return Entry::create($this, $title, $content);
-    }
-
     public static function create($email, $password)
     {
         $arr = array(
