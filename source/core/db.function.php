@@ -45,6 +45,9 @@ function db( $host = null , $port = null , $user = null , $password = null , $db
 function s( $str , $db = NULL )
 {
 	if( $db == NULL ) $db = db();
+	if (!is_string($str)) {
+		throw new Exception("s() with no string", 1);
+	}
 	return   mysql_real_escape_string( $str , $db )  ;
 	
 }

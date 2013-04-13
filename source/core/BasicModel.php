@@ -24,9 +24,6 @@ class BasicModel
     protected $id = null;
     protected $info = null;
 
-    protected static $_table;
-    protected static $_primaryKey;
-    
     // 新建一个 Object
     // 接受的参数是一个 id
     // 或者数组形式的数据
@@ -105,7 +102,7 @@ class BasicModel
         if (isset(static::$table)) {
             return static::$table;
         } else {
-            return static::$_table = self::camelCaseToUnderscore(get_called_class());
+            return self::camelCaseToUnderscore(get_called_class());
         }
     }
 
@@ -124,16 +121,23 @@ class BasicModel
     // 接受传一个键值对数组作为参数，也接受传名和值两个参数
     public function update($a, $value = null)
     {
-        $exprArr = array();
         if($value !== null) { // given by key => value
-            $exprArr[] = "`$a`='".s($value)."'";
-        } elseif (is_array($a)) {
-            foreach ($a as $key => $value) {
-                if (is_numeric($key)) {
-                    $exprArr[] = $value; // 直接是表达式
-                } elseif ($value !== null) {
-                    $exprArr[] = "`$key`='".s($value)."'";
+            return $this->updateArray(array($a => $value));
+        } else {
+            return $this->updateArray($a);
+        }
+    }
+
+    private function updateArray($arr) {
+        $exprArr = array();
+        foreach ($arr as $key => $value) {
+            if (is_numeric($key)) {
+                $exprArr[] = $value; // 直接是表达式
+            } elseif ($value !== null) {
+                if (is_object($value) && is_a($value, 'BasicModel')) {
+                    $value = $value->id;
                 }
+                $exprArr[] = "`$key`='".s($value)."'";
             }
         }
         $exprArr = array_unique($exprArr); // 如果条件一样，没必要update两遍，主要针对 time=NOW()
