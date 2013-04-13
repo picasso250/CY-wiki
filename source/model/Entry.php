@@ -8,7 +8,7 @@ class Entry extends BasicModel
 {
     public static $relationMap = array(
         'creator' => 'user',
-        'latest_version' => 'version',
+        'latest' => 'version',
     );
 
     public function urlTitle()
@@ -19,7 +19,7 @@ class Entry extends BasicModel
 
     public static function has($title)
     {
-        $entries = static::search()->by('latest_version.title', $title)->find(1);
+        $entries = static::search()->by('latest.title', $title)->find(1);
         return $entries ? $entries[0] : false;
     }
 
