@@ -84,3 +84,4 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 ALTER TABLE  `entry` ADD  `category` INT( 10 ) UNSIGNED NOT NULL AFTER  `title`;
 ALTER TABLE  `version` ADD  `title` VARCHAR( 200 ) NOT NULL AFTER  `editor`;
+-------------------------------
