@@ -66,6 +66,7 @@ class BasicModel
             $keyArr[] = "`$key`";
         }
         $sql = 'INSERT INTO `'.self::table().'` ('.implode(',', $keyArr).') VALUES ('.implode(',', $valueArr).')';
+        echo "$sql";
         run_sql($sql);
         if (db_errno()) {
             throw new Exception("error when insert: ".db_error(), 1);
