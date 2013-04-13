@@ -72,19 +72,32 @@ class Entry extends BasicModel
         return self::search()->limit($num)->sort('updated DESC')->find();
     }
 
-    public function edit(User $user, $title, $content, $reason)
+    public function edit($info)
     {
+        $user = g('user');
         $versionInfo = array(
             'editor' => $user,
-            'title' => $title,
-            'content' => $content,
-            'reason' => $reason
+            'title' => $info['title'],
+            'content' => $info['content'],
+            'reason' => $info['reason']
         );
         $version = Version::create($versionInfo);
+        if ($info['category_name']) {
+            $category = Category::search()->by('name', $info['category_name'])->find(1);
+            if ($category) {
+                $category = $category[0];
+            } else {
+                $category = Category::create(array('name' => $info['category_name']));
+            }
+        } else {
+            $category = 0;
+        }
         parent::update(array(
             'latest' => $version->id, 
             'title' => $title,
-            'updated = NOW()' => null));
+            'category' => $category,
+            'updated = NOW()' => null,
+        ));
     }
 
     public static function buildDbArgs($conds)

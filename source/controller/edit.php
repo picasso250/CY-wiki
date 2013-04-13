@@ -16,13 +16,14 @@ class EditController extends BasicController {
         $entry = new Entry($id);
 
         if ($GLOBALS['by_post']) {
-            $title = _post('title');
-            $content = _post('content');
-            $reason = _post('reason');
-            $
-
-            $entry->edit($GLOBALS['user'], $title, $content, $reason);
-            redirect("wiki/$title");
+            $info = array(
+                'title' => _post('title'),
+                'content' => _post('content'),
+                'reason' => _post('reason'),
+                'category_name' => _post('category_name');
+            );
+            $entry->edit($info);
+            redirect("wiki/".$entry->latestVersion()->title);
         } else {
             $title = $entry->latestVersion()->title;
             $content = $entry->latestVersion()->content;
