@@ -65,3 +65,8 @@ CREATE TABLE IF NOT EXISTS `watch` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `u_e` (`user`,`entry`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+
+--------------------
+
+ALTER TABLE  `entry` ADD  `category` INT( 10 ) UNSIGNED NOT NULL AFTER  `title`

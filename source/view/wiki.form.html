@@ -11,6 +11,9 @@ if (!isset($content))
     $content = '';
 if (!isset($reason))
     $reason = '';
+if (!isset($category_name)) {
+  $category_name = '';
+}
 
 $id = _req('id');
 ?>
@@ -20,7 +23,8 @@ $id = _req('id');
   <?php endif ?>
   <input type="text" name="title" class="span12" placeholder="标题" value="<?= $title ?>">
   <textarea name="content" class="span12 " rows="16"><?= $content ?></textarea>
-  <input type="text" name="reason" class = "span12" placeholder="原因（可选）" value="<?= $reason ?>">
+  <input type="text" name="reason" class="span12" placeholder="原因（可选）" value="<?= $reason ?>">
+  <input type="text" name="category_name" class="span12" placeholder="分类" value="<?php echo $category_name ?>">
   <input type="submit" class="btn btn-primary" value="<?= $buttonText ?>">
   <button class="btn" id="previewButton">预览</button>
 </form>
