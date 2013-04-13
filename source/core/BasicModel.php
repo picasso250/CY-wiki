@@ -48,7 +48,7 @@ class BasicModel
         $keyArr = array();
         $valueArr = array();
         foreach ($info as $key => $value) {
-            if (is_object($value) && is_a($value, 'BasicModel')) {
+            if (is_object($value) && is_a($value, get_class())) {
                 $value = $value->id;
             }
 
@@ -63,7 +63,6 @@ class BasicModel
             $keyArr[] = "`$key`";
         }
         $sql = 'INSERT INTO `'.self::table().'` ('.implode(',', $keyArr).') VALUES ('.implode(',', $valueArr).')';
-        echo "$sql";
         run_sql($sql);
         if (db_errno()) {
             throw new Exception("error when insert: ".db_error(), 1);
@@ -134,7 +133,7 @@ class BasicModel
             if (is_numeric($key)) {
                 $exprArr[] = $value; // 直接是表达式
             } elseif ($value !== null) {
-                if (is_object($value) && is_a($value, 'BasicModel')) {
+                if (is_object($value) && is_a($value, get_class())) {
                     $value = $value->id;
                 }
                 $exprArr[] = "`$key`='".s($value)."'";
@@ -277,7 +276,7 @@ class Searcher
     {
         // 使得用户可以传一个object进来
         // is_object() 判断不可少，不然SAE上会把String也认为Ojbect
-        if (is_object($value) && is_a($value, 'BasicModel'))
+        if (is_object($value) && is_a($value, get_class()))
             $value = $value->id;
 
         $relationMap = $this->relationMap();
