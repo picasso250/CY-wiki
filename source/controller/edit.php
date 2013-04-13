@@ -19,11 +19,12 @@ class EditController extends BasicController {
             $title = _post('title');
             $content = _post('content');
             $reason = _post('reason');
+            $
 
             $entry->edit($GLOBALS['user'], $title, $content, $reason);
             redirect("wiki/$title");
         } else {
-            $title = $entry->title;
+            $title = $entry->latestVersion()->title;
             $content = $entry->latestVersion()->content;
             add_scripts(array('preview'));
             render_view('master', compact('entry', 'title', 'content'));
