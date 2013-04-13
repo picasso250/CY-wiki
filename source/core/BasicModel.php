@@ -54,7 +54,7 @@ class BasicModel
 
             if (is_numeric($key)) { // 这里主要是为了解决 created=NOW() 这种表达式
                 $t = explode('=', $value);
-                $key = $t[0];
+                $key = trim($t[0]);
                 $value = $t[1];
                 $valueArr[] = $value;
             } else {

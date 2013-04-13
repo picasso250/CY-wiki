@@ -38,7 +38,7 @@ class Entry extends BasicModel
         $user = g('user');
         $entryInfo = array(
             'creator' => $user,
-            // 'created = NOW()'
+            'created = NOW()'
         );
         $entry = parent::create($entryInfo);
 
