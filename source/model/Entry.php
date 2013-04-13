@@ -6,7 +6,10 @@
 
 class Entry extends BasicModel
 {
-    public static $relationMap = array('creator' => 'user');
+    public static $relationMap = array(
+        'creator' => 'user',
+        'latest_version' => 'version',
+    );
 
     public function urlTitle()
     {
@@ -16,8 +19,8 @@ class Entry extends BasicModel
 
     public static function has($title)
     {
-        $info = Sdb::fetchRow('*', self::table(), array('title = ?' => $title));
-        return $info ? new self($info) : false;
+        $entries = static::search()->by('latest_version.title', $title)->find(1);
+        return $entries ? $entries[0] : false;
     }
 
     public function versions()
