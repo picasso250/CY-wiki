@@ -38,6 +38,8 @@ function init_env()
 
     // auto require when using class (model or lib)
     spl_autoload_register(function ($classname) {
+        require_once CORE_ROOT . 'BasicModel.php';
+        require_once CORE_ROOT . 'db.function.php';
         $filename = str_replace('\\', DS, $classname) . '.php';
         $model_file = APP_ROOT . 'model' . DS . $filename;
         $lib_file = CORE_ROOT . 'lib' . DS . $filename;

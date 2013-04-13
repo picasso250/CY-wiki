@@ -6,11 +6,6 @@
 
 class User extends BasicModel
 {
-    public function createEntry($title, $content)
-    {
-        return Entry::create($this, $title, $content);
-    }
-
     public static function create($email, $password)
     {
         $arr = array(
@@ -71,14 +66,14 @@ class User extends BasicModel
     public function createdEntries()
     {
         // $this->updateCreatedEntries();
-        return Entry::search()->filterBy('creator', $this)->orderBy('id DESC')->find();
+        return Entry::search()->by('creator', $this)->sort('id DESC')->find();
     }
 
     public function editedEntries()
     {
         return Entry::search()
-            ->join(Version::search()->filterBy('editor', $this))
-            ->orderBy('updated DESC')
+            ->join(Version::search()->by('editor', $this))
+            ->sort('updated DESC')
             ->distinct()
             ->find();
     }

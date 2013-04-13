@@ -4,10 +4,25 @@
  * @author  ryan <cumt.xiaochi@gmail.com>
  */
 ?>
-<ul>
+<table class="table">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>分类</th>
+    </tr>
+  </thead>
   <?php foreach ($entries as $entry): ?>
-    <li>
-      <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a>
-    </li>
+    <tr>
+      <td>
+        <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->latestVersion()->title) ?></a>
+      </td>
+      <td>
+        <?php if ($entry->category): ?>
+          <?php echo $entry->category()->name ?>
+        <?php else: ?>
+          无分类
+        <?php endif ?>
+      </td>
+    </tr>
   <?php endforeach ?>
-</ul>
+</table>

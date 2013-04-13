@@ -1,110 +1,155 @@
 <?php
 
-require_once CORE_ROOT . 'Searcher.php';
-
 /**
- * @author ryan
+ * 
+ * ORM for LazyPHP
+ * 
+ * https://github.com/picasso250/ORM4LazyPHP
+ * 
+ * 这是一个专门为 LazyPHP 打造的 Active Record 类
+ * 数据库中的一行数据对应一个对象，而一个表对应一个类。
+ * 
+ * 使用方式：
+ * $book = new Book($book_id);
+ * echo $book->name;
+ * echo $book->author()->name;
+ * $books = Book::search()->by('author.name', '曹雪芹')->find();
+ * 
+ * @author picasso250
+ * @version 0.1 fix by('expr not include other table')
  */
 
 class BasicModel
 {
     protected $id = null;
     protected $info = null;
-    
-    public function __construct($para)
+
+    // 新建一个 Object
+    // 接受的参数是一个 id
+    // 或者数组形式的数据
+    public function __construct($a)
     {
-        if (is_array($para) && isset($para['id'])) {
-            $this->id = $para['id'];
-            $this->info = $para;
-        } elseif (is_numeric($para)) {
-            $this->id = $para;
-        } elseif (is_a($para, get_called_class())) { // clone
-            $this->id = $para->id;
+        if (is_array($a) && isset($a[self::primaryKey()])) { // new from array
+            $this->id = $a[self::primaryKey()];
+            $this->info = $a;
+        } elseif (is_numeric($a)) { // new from id
+            $this->id = $a;
+        } elseif (is_object($a) && is_a($a, get_called_class())) { // clone
+            $this->id = $a->id;
         } else {
-            d($para);
-            throw new Exception("not good arg for construct");
+            throw new Exception("not good arg for construct: $a");
         }
     }
 
+    // 在数据库中插入一条数据
+    // $info 的形式 array('expression', 'key' => 'value',...)
     public static function create($info = array())
     {
-        $b = array_map(function ($key) {
-            if (strpos($key, '=') === false)
-                return "$key=?";
-            else
-                return $key;
-        }, array_keys($info));
-        $str = implode(',', $b);
-        $values = self::notNull($info);
+        $keyArr = array();
+        $valueArr = array();
+        foreach ($info as $key => $value) {
+            if (is_object($value) && is_a($value, get_class())) {
+                $value = $value->id;
+            }
 
-        $data = array($str => $values);
+            if (is_numeric($key)) { // 这里主要是为了解决 created=NOW() 这种表达式
+                $t = explode('=', $value);
+                $key = $t[0];
+                $value = $t[1];
+                $valueArr[] = $value;
+            } else {
+                $valueArr[] = "'".s($value)."'";
+            }
+            $keyArr[] = "`$key`";
+        }
+        $sql = 'INSERT INTO `'.self::table().'` ('.implode(',', $keyArr).') VALUES ('.implode(',', $valueArr).')';
+        run_sql($sql);
+        if (db_errno()) {
+            throw new Exception("error when insert: ".db_error(), 1);
+        }
 
         $self = get_called_class();
-        Sdb::insert($data, self::table());
-        return new $self(Sdb::lastInsertId());
+        return new $self(last_id());
     }
 
-    public static function notNull($info)
-    {
-        return array_filter(array_values($info), function ($e) {
-            return ($e !== null && $e !== false);
-        });
-    }
-
+    // 将对象转为数组
     public function toArray()
     {
+        if ($this->info) {
+            return $this->info;
+        }
         return $this->info();
     }
 
-    public function info() // will this bug?
-    {
-        $self = get_called_class();
-        $ret = Sdb::fetchRow('*', $self::table(), $this->selfCond());
-        if (empty($ret))
-            throw new Exception(get_called_class() . " no id: $this->id");
-        $this->info = $ret;
-        return $ret;
-    }
-
+    // 查询这条数据是否存在
+    // 如存在，顺带填充 info 数组
     public function exists()
     {
-        return false !== Sdb::fetchRow('id', static::table(), $this->selfCond());
+        $sql = 'SELECT * FROM `'.self::table()."` WHERE `id`='".s($this->id)."' LIMIT 1";
+        $ret = get_line($sql);
+        if (empty($ret)) {
+            return false;
+        } else {
+            $this->info = $ret;
+            return true;
+        }
     }
 
-    public function selfCond()
-    {
-        return array('id = ?' => $this->id);
-    }
-
+    // 获取这个类对应的表名
     public static function table()
     {
-        $self = get_called_class();
-        if (isset($self::$table))
-            return $self::$table;
-        else 
-            return camel2under($self); // camal to underscore
+        if (isset(static::$table)) {
+            return static::$table;
+        } else {
+            return self::camelCaseToUnderscore(get_called_class());
+        }
     }
 
+    // 获得这个表的主键名
+    // 这个方法还没开始用，因为要改动的地方实在太多了
+    public static function primaryKey()
+    {
+        if (isset(static::$primaryKey)) {
+            return static::$primaryKey;
+        } else {
+            return 'id';
+        }
+    }
+
+    // 更新这条数据
+    // 接受传一个键值对数组作为参数，也接受传名和值两个参数
     public function update($a, $value = null)
     {
         if($value !== null) { // given by key => value
-            $data = array("$a=?" => array($value));
+            return $this->updateArray(array($a => $value));
         } else {
-            $b = array_map(function ($key) {
-                if (strpos($key, '=') === false)
-                    return "$key=?";
-                else
-                    return $key;
-            }, array_keys($a));
-            $str = implode(',', $b);
-            $values = self::notNull($a);
-            $data = array($str => $values);
+            return $this->updateArray($a);
+        }
+    }
+
+    private function updateArray($arr) {
+        $exprArr = array();
+        foreach ($arr as $key => $value) {
+            if (is_numeric($key)) {
+                $exprArr[] = $value; // 直接是表达式
+            } elseif ($value !== null) {
+                if (is_object($value) && is_a($value, get_class())) {
+                    $value = $value->id;
+                }
+                $exprArr[] = "`$key`='".s($value)."'";
+            }
+        }
+        $exprArr = array_unique($exprArr); // 如果条件一样，没必要update两遍，主要针对 time=NOW()
+        $sql = 'UPDATE `'.self::table().'` SET '.implode(',', $exprArr)." WHERE `id`='".s($this->id)."' LIMIT 1";
+        run_sql($sql);
+        if (db_errno()) {
+            throw new Exception("update error: ".db_error(), 1);
         }
         $self = get_called_class();
-        Sdb::update($data, $self::table(), $this->selfCond()); // why we need that? that doesn't make any sense
         $this->info = $this->info(); // refresh data
     }
 
+    // 给予程序员通过访问这个对象的属性来取数据的能力
     public function __get($name) 
     {
         if ($name === 'id') return $this->id;
@@ -112,22 +157,44 @@ class BasicModel
             $this->info = $this->info();
         $info = $this->info;
         if (is_bool($info)) {
-            d($info);
-            throw new Exception("info empty, maybe because you have no id: $this->id in " . get_called_class());
+            throw new Exception("info empty, you have no id: $this->id in " . get_called_class());
         }
         if (!array_key_exists($name, $this->info)) {
-            d($this->info);
             throw new Exception("no '$name' when get in class " . get_called_class());
         }
         return $this->info[$name];
     }
 
+    // 给予程序员通过这个类的属性赋值来更新数据库的能力
+    public function __set($prop, $value)
+    {
+        $this->update($prop, $value);
+    }
+
+    // 给予程序员查看属性存在与否的能力
+    public function __isset($prop)
+    {
+        if (empty($this->info))
+            $this->info = $this->info();
+        if (!is_array($this->info)) {
+            throw new Exception("no info when get id $this->id in class".get_called_class(), 1);
+        }
+        return isset($this->info[$prop]);
+    }
+
+    // 给名字，出值
+    public function get($prop)
+    {
+        return $this->__get($prop);
+    }
+
+    // 返回对应的外键所代表的对象
     public function __call($name, $args)
     {
         if (empty($this->info)) {
             $this->info = $this->info();
         }
-        $prop = camel2under($name);
+        $prop = self::camelCaseToUnderscore($name);
         if (isset($this->info[$prop])) {
             $class = ucfirst($name);
             return new $class($this->info[$prop]);
@@ -136,19 +203,210 @@ class BasicModel
         }
     }
 
-    public function del()
+    // 删除这条数据
+    public function delete()
     {
-        Sdb::del(self::table(), $this->selfCond());
+        $sql = 'DELETE FROM `'.self::table()."` WHERE `id`='".s($this->id)."' LIMIT 1";
+        run_sql($sql);
+        if (db_errno()) {
+            throw new Exception("delete error: ".db_error(), 1);
+        }
     }
 
+    // 开启搜索模式
     public static function search()
     {
         return new Searcher(get_called_class());
     }
 
+    // 获取这个类的外键映射表
     public static function relationMap()
     {
         $self = get_called_class();
         return isset($self::$relationMap) ? $self::$relationMap : array();
+    }
+
+    protected function underscoreToCamelCase($value) 
+    {
+        return implode(array_map(function($value) { return ucfirst($value); }, explode('_', $value)));
+    }
+     
+    protected function camelCaseToUnderscore($value) 
+    {
+        return preg_replace_callback('/([A-Z])/', function($char) { return '_'.strtolower($char[1]); }, lcfirst($value));
+    }
+
+    // 从数据库中得到这条数据
+    private function info()
+    {
+        $sql = 'SELECT * FROM `'.self::table()."` WHERE `id`='".s($this->id)."' LIMIT 1";
+        $ret = get_line($sql);
+        if (empty($ret))
+            throw new Exception(get_called_class() . " no id: $this->id");
+        return $this->info = $ret;
+    }
+}
+
+// 搜索类，复杂的查询操作，通过这个类完成
+class Searcher
+{
+    private $table    = null;
+    private $class    = null;
+    private $fields   = array();
+    private $tables   = array();
+    private $conds    = array();
+    private $orders   = array();
+    private $limit    = 1000;
+    private $offset   = 0;
+    private $distinct = false;
+    
+    public function __construct($class)
+    {
+        $this->class = $class;
+        $this->table = $class::table();
+        $this->tables[] = $this->table;
+    }
+
+    /**
+     * $book = Book::search()->by('author.name', '曹雪芹');
+     * 操作符不支持 IN/BETWEEN
+     * 如果只传一个字符串，那么将会把这个字符串直接当作表达式来用！
+     */
+    public function by($expr, $value = null, $op = '=')
+    {
+        // 使得用户可以传一个object进来
+        // is_object() 判断不可少，不然SAE上会把String也认为Ojbect
+        if (is_object($value) && is_a($value, get_class()))
+            $value = $value->id;
+
+        $relationMap = $this->relationMap();
+
+        // table.key
+        // 如果是 t1.key1 OR t2.key1 该如何处理？
+        $tableDotKey = preg_match('/\b`?(\w+)`?\.`?(\w+)`?\b/', $expr, $matches); 
+
+        if ($tableDotKey) {
+            $refTable = $matches[1];
+            $refKey = $matches[2];
+            $foreignKey = $refTable;
+            
+
+            // 如果有特意配置，就可以用外键名当作表名查询
+            if (isset($relationMap[$refTable])) {
+                $refTable = $relationMap[$refTable];
+            }
+
+            if ($value !== null) {
+                $cond = "`$refTable`.`$refKey` $op '".s($value)."'";
+            } else {
+                $cond = "($expr)";
+            }
+            $this->conds[] = $cond;
+            if ($refTable != $this->table) {
+                $this->conds[] = "`$this->table`.`$foreignKey`=`$refTable`.id"; // join on where
+                $this->tables[] = $refTable;
+
+                // 既然在查找时作为条件，就作为值返回吧
+                $this->fields[] = "`$refTable`.`$refKey` AS {$refTable}_{$refKey}"; 
+                $this->fields[] = "`$refTable`.id AS {$refTable}_id";
+            }
+        } elseif ($value === null) {
+            $this->conds[] = "($expr)";
+        } else {
+            $this->conds[] = "`$expr` $op '".s($value)."'";
+        }
+            
+        return $this;
+    }
+
+    public function sort($exp)
+    {
+        $this->orders[] = "$this->table.$exp";
+        return $this;
+    }
+
+    public function limit()
+    {
+        if (!func_num_args())
+            return $this->limit;
+        $this->limit = func_get_arg(0);
+        return $this;
+    }
+
+    public function offset()
+    {
+        if (!func_num_args())
+            return $this->offset;
+        $this->offset = func_get_arg(0);
+        return $this;
+    }
+
+    public function distinct()
+    {
+        $this->distinct = true;
+        return $this;
+    }
+
+    // 执行查询
+    // 如查不到，返回空数组
+    public function find($limit = null, $offset = null)
+    {
+        if ($this->distinct) {
+            $field = "DISTINCT(`$this->table`.id)";
+        } else {
+            $this->fields[] = "`$this->table`.*";
+            $field = implode(',', array_unique($this->fields));
+        }
+        $tableStr = '`'.implode('`,`', array_unique($this->tables)).'`';
+        if ($this->conds) {
+            $where = 'WHERE '.implode(' AND ', array_unique($this->conds));
+        } else {
+            $where = '';
+        }
+        $orderByStr = $this->orders ? 'ORDER BY '.implode(',', $this->orders) : '';
+        if ($limit !== null) {
+            $this->limit = $limit;
+        }
+        if ($offset !== null) {
+            $this->offset = $offset;
+        }
+        $limitStr = $this->limit ? "LIMIT $this->limit" : '';
+        $tail = "$limitStr OFFSET $this->offset";
+        $sql = "SELECT $field FROM $tableStr $where $orderByStr $tail";
+        $results = get_data($sql) ?: array();
+
+        $ret = array();
+        foreach ($results as $a) {
+            if (count($a) === 1) {
+                $a = $a['id'];
+            }
+            $ret[] = new $this->class($a);
+        }
+        return $ret;
+    }
+
+    public function count()
+    {
+        $field = "`$this->table`.id";
+        if ($this->distinct)
+            $field = "DISTINCT($field)";
+        $tableStr = implode(',', array_unique($this->tables));
+        if ($this->conds) {
+            $where = 'WHERE '.implode(' AND ', array_unique($this->conds));
+        } else {
+            $where = '';
+        }
+        $sql = "SELECT COUNT($field) FROM $tableStr $where";
+        return  get_var($sql);
+    }
+
+    // ------------ private section -----------------
+
+    private function relationMap()
+    {
+        if (isset($this->relationMap))
+            return $this->relationMap;
+        $class = $this->class;
+        return $this->relationMap = $class::relationMap();
     }
 }

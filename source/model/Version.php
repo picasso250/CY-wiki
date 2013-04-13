@@ -10,14 +10,9 @@ class Version extends BasicModel
         'editor' => 'user',
         'entry' => 'entry');
     
-    public static function create(User $u, Entry $e, $content, $reason = '')
+    public static function create($info)
     {
-        $info = array(
-            'entry' => $e->id,
-            'editor' => $u->id,
-            'content' => $content,
-            'reason' => $reason,
-            'edited = NOW()' => null);
+        // $info[] = 'edited = NOW()';
         return parent::create($info);
     }
 
