@@ -135,6 +135,7 @@ class BasicModel
                 }
             }
         }
+        $exprArr = array_unique($exprArr); // 如果条件一样，没必要update两遍，主要针对 time=NOW()
         $sql = 'UPDATE `'.self::table().'` SET '.implode(',', $exprArr)." WHERE `id`='".s($this->id)."' LIMIT 1";
         run_sql($sql);
         if (db_errno()) {
