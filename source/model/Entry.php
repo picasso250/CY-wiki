@@ -42,6 +42,7 @@ class Entry extends BasicModel
         $versionInfo = array(
             'editor' => $user,
             'entry' => $entry,
+            'title' => $info['title'],
             'content' => $info['content'],
         );
         $version = Version::create($versionInfo);
