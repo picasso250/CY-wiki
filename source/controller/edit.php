@@ -20,15 +20,16 @@ class EditController extends BasicController {
                 'title' => _post('title'),
                 'content' => _post('content'),
                 'reason' => _post('reason'),
-                'category_name' => _post('category_name');
+                'category_name' => _post('category_name'),
             );
             $entry->edit($info);
             redirect("wiki/".$entry->latestVersion()->title);
         } else {
             $title = $entry->latestVersion()->title;
             $content = $entry->latestVersion()->content;
+            $category_name = $entry->category ? $entry->category()->name : '';
             add_scripts(array('preview'));
-            render_view('master', compact('entry', 'title', 'content'));
+            render_view('master', compact('entry', 'title', 'content', 'category_name'));
         }
     }
 }
