@@ -69,4 +69,5 @@ CREATE TABLE IF NOT EXISTS `watch` (
 
 --------------------
 
-ALTER TABLE  `entry` ADD  `category` INT( 10 ) UNSIGNED NOT NULL AFTER  `title`
+ALTER TABLE  `entry` ADD  `category` INT( 10 ) UNSIGNED NOT NULL AFTER  `title`;
+ALTER TABLE  `version` ADD  `title` VARCHAR( 200 ) NOT NULL AFTER  `editor`;
