@@ -70,7 +70,13 @@ class Entry extends BasicModel
 
     public function edit(User $user, $title, $content, $reason)
     {
-        $version = Version::create($user, $this, $content, $reason);
+        $versionInfo = array(
+            'editor' => $user,
+            'title' => $title,
+            'content' => $content,
+            'reason' => $reason
+        );
+        $version = Version::create($versionInfo);
         parent::update(array(
             'latest' => $version->id, 
             'title' => $title,
