@@ -6,7 +6,7 @@
 ?>
 <h1>
   Diff
-  <a href="<?= ROOT . 'wiki/' . $entry->title ?>"><?= $entry->title ?></a>
+  <a href="<?= ROOT . 'wiki/' . $entry->latestVersion()->title ?>"><?= $entry->latestVersion()->title ?></a>
 </h1>
 
 <?php $pl = $l+1; $pr = $r+1; ?>

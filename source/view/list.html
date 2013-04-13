@@ -7,7 +7,7 @@
 <ul>
   <?php foreach ($entries as $entry): ?>
     <li>
-      <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->title) ?></a>
+      <a href="<?= ROOT . 'wiki/' . $entry->urlTitle() ?>"><?= htmlspecialchars($entry->latestVersion()->title) ?></a>
     </li>
   <?php endforeach ?>
 </ul>
