@@ -276,7 +276,7 @@ class Searcher
     {
         // 使得用户可以传一个object进来
         // is_object() 判断不可少，不然SAE上会把String也认为Ojbect
-        if (is_object($value) && is_a($value, get_class()))
+        if (is_object($value) && is_a($value, 'BasicModel'))
             $value = $value->id;
 
         $relationMap = $this->relationMap();
