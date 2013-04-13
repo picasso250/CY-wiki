@@ -10,7 +10,7 @@ class Entry extends BasicModel
 
     public function urlTitle()
     {
-        $urlTitle = urlencode($this->title);
+        $urlTitle = urlencode($this->latestVersion()->title);
         return $urlTitle;
     }
 
@@ -50,7 +50,7 @@ class Entry extends BasicModel
             'latest' => $version,
             'updated = NOW()'));
 
-        if (isset($info['category_name'])) {
+        if (isset($info['category_name']) && $info['category_name']) {
             $category = Category::search()->by('name', $info['category_name'])->find(1);
             if ($category) {
                 $category = $category[0];
