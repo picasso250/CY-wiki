@@ -1,30 +1,51 @@
+-- phpMyAdmin SQL Dump
+-- version 3.5.4
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Apr 22, 2013 at 10:53 PM
+-- Server version: 5.5.27
+-- PHP Version: 5.3.15
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 --
--- 数据库: `cywiki`
+-- Database: `cywiki`
 --
-CREATE DATABASE `cywiki` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `cywiki`;
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `entry`
+-- Table structure for table `category`
+--
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `entry`
 --
 
 CREATE TABLE IF NOT EXISTS `entry` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `creator` int(10) unsigned NOT NULL,
-  `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `category` int(10) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `updated` datetime NOT NULL,
   `latest` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -34,28 +55,29 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `version`
+-- Table structure for table `version`
 --
 
 CREATE TABLE IF NOT EXISTS `version` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `entry` int(10) unsigned NOT NULL,
   `editor` int(10) unsigned NOT NULL,
+  `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `content` longtext COLLATE utf8_unicode_ci NOT NULL,
   `reason` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `edited` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `watch`
+-- Table structure for table `watch`
 --
 
 CREATE TABLE IF NOT EXISTS `watch` (
@@ -65,9 +87,3 @@ CREATE TABLE IF NOT EXISTS `watch` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `u_e` (`user`,`entry`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
-
-
---------------------
-
-ALTER TABLE  `entry` ADD  `category` INT( 10 ) UNSIGNED NOT NULL AFTER  `title`;
-ALTER TABLE  `version` ADD  `title` VARCHAR( 200 ) NOT NULL AFTER  `editor`;
