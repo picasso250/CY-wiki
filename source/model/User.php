@@ -11,7 +11,8 @@ class User extends BasicModel
         $arr = array(
             'email' => $email,
             'password' => md5($password),
-            'created=NOW()' => null);
+            'created=NOW()'
+        );
         return parent::create($arr);
     }
 
