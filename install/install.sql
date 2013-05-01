@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2013 at 10:53 PM
+-- Generation Time: May 01, 2013 at 11:25 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.3.15
 
@@ -13,6 +13,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `cywiki`
 --
+CREATE DATABASE `cywiki` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `cywiki`;
 
 -- --------------------------------------------------------
 
