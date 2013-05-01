@@ -21,7 +21,7 @@ $config['db'] = array(
     'host' => 'localhost',
     'dbname' => 'cywiki',
     'username' => 'root',
-    'password' => 'root'
+    'password' => ''
 );
 
 if (ON_SAE) {
