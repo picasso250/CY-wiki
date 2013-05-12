@@ -219,6 +219,9 @@ class Markdown_Parser {
 	var $escape_chars = '\`*_{}[]()>#+-.!';
 	var $escape_chars_re;
 
+	# for link style [text], no () or [id] after, will auto transfer
+	var $auto_implicit_link = true;
+
 
 	function Markdown_Parser() {
 	#
@@ -723,6 +726,8 @@ class Markdown_Parser {
 		return $text;
 	}
 	function _doAnchors_reference_callback($matches) {
+		$is_implicit = !isset($matches[3]);
+
 		$whole_match =  $matches[1];
 		$link_text   =  $matches[2];
 		$link_id     =& $matches[3];
@@ -746,6 +751,17 @@ class Markdown_Parser {
 				$title = $this->encodeAttribute($title);
 				$result .=  " title=\"$title\"";
 			}
+		
+			$link_text = $this->runSpanGamut($link_text);
+			$result .= ">$link_text</a>";
+			$result = $this->hashPart($result);
+		}
+		elseif ($is_implicit && $this->auto_implicit_link) {
+			$url = $this->encodeAttribute($link_id);
+			
+			$result = "<a href=\"$url\"";
+			$title = $this->encodeAttribute($link_id);
+			$result .=  " title=\"$title\"";
 		
 			$link_text = $this->runSpanGamut($link_text);
 			$result .= ">$link_text</a>";

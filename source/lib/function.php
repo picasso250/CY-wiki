@@ -11,7 +11,8 @@ function markdown_parse($content)
 
 function parse_inner_link($str)
 {
-    return preg_replace('/\[(.+?)\](?!\()/', '[$1]($1)', $str);
+    // return preg_replace('/\[(.+?)\](?!\()/', '[$1]($1)', $str);
+    return $str;
 }
 
 function diff_old($from, $to)
